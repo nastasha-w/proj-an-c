@@ -1,8 +1,0 @@
-#!/bin/sh
-
-MAKEFILES =./makefiles_defaults/Makefile_*
-for f in $MAKEFILES
-do
-  echo "compiling with $f"
-  make clean -f $f
-done
