@@ -1,0 +1,62 @@
+# PERIODIC BOUNDARY CONDITIONS:
+# Compile with first two comments below removed.
+# v2: main_v2 sets hmin to sqrt(2)*0.5*pixellength in stead of 0.5*pixellength 
+#     (lines 208,210)
+# v3: really gets the hmin right
+#     set NumPart to long int in the main routine, since 1504^3 overflows int
+
+#EXEC  = HsmlAndProject_v3_notree_gadget_perbc.so
+#EXEC  = HsmlAndProject_v3_C2.so
+EXEC  = HsmlAndProject_v3_C2_perbc_omp.so
+
+OBJS   = main_v3_omp.o tree_v3_omp.o peano_v3_omp.o allvars_v3_omp.o kernel_v3_omp.o
+
+OPTIONS += -DPERIODIC
+
+# turns off tree building to find smoothing lengths if zero (unnecessary calculation when considering e.g. gas particles)
+#OPTIONS += -DNOTREE
+
+# KERNEL SHAPE:
+# Choose one of -DSPH_KERNEL_GADGET, -DSPH_KERNEL_CUBIC,
+# -DSPH_KERNEL_QUARTIC, -DSPH_KERNEL_QUINTIC, 
+# -DSPH_KERNEL_C2, -DSPH_KERNEL_C4, -DSPH_KERNEL_C6
+
+KERNEL = -DSPH_KERNEL_C2
+#KERNEL = -DSPH_KERNEL_GADGET
+
+# OpenMP, parallisation options DOATOMIC, DOREDUCTION, DOLOCKS (with DOLOCKS having ARRCHUNKPIX suboption)
+# do not use more than one parallel option!, except setting ARRCHUNKPIX in DOLOCKS
+# multiple options will cause undocumented behaviour
+# do choose at least one, otherwise there is no protection against race conditions
+# DOALLPAR controls whether processes do all outer loops in parallel, or just the main particle loop
+# SCHEDULE defines the schedule used in the particle loop (auto, runtime, static, dynamic, guided)
+# Best tested: ATOMIC; dynamic,30000; (DOALLPAR) 
+DOOPENMP += -fopenmp
+DOOPENMP += -DDOATOMIC
+#DOOPENMP += -DDOLOCKS
+#DOOPENMP += -DARRCHUNKPIX=100
+#DOOPENMP += -DDOREDUCTION
+
+DOOPENMP += -DDOALLPAR
+DOOPENMP += -DSCHEDULE=dynamic,30000
+#dynamic,30000
+INCL   = proto_v3_omp.h allvars_v3_omp.h kernel_v3.h
+
+CC     =  gcc
+
+CFLAGS =  -O3 $(OPTIONS) $(KERNEL) $(DOOPENMP) -fPIC -Wall -mcmodel=medium
+LNKCMD =  $(CC) -shared $(DOOPENMP)
+
+LIBS   =  -lm -g
+
+
+
+$(EXEC): clean $(OBJS)
+	 $(LNKCMD)  $(OBJS) $(LIBS)  -o $(EXEC)
+
+$(OBJS): $(INCL)
+
+clean:
+	 rm -f $(OBJS) $(EXEC) ../make_maps_v3_master.pyc
+pyclean:
+	rm -f ../make_maps_v3_master.pyc

@@ -1,0 +1,193 @@
+Natasha Wijers, 2018-03-23
+quick start + Makefile documentation added 2018-06-04
+
+with thanks to Matthieu Schaller for helping with the OpenMP implementation
+
+
+------------------------------------------------------------------------------
+Quick start
+------------------------------------------------------------------------------
+The make_all shell script calls the default makefiles to get all the different 
+executable options. A different script (clean_all) calls the clean option of 
+all these scripts. The naming of the executables this produces, is as assumed 
+by the python wrapper. It's nothing clever, just 16 makefiles and a shell 
+script that calls them all.
+
+Just run 
+> make_all 
+or 
+> clean_all 
+from this directory.
+
+!! I just tested if the exec files appeared. Check the makefile you want to 
+   use before doing any science/production projections with it !!
+ 
+------------------------------------------------------------------------------
+Makefile
+------------------------------------------------------------------------------
+like in the original HsmlAndProject, there are options for 
+- which kernel to use in the projections:
+  KERNEL = <kernel name>, 
+  makefile lines 19--25, 
+  functions defined in kernel_v3_omp.c
+- whether or not the projection in in a periodic box:
+  OPTIONS += -DPERIODIC means use periodic boundary conditions
+  makefile line 14
+  in main_v3_omp.c: determines how distances bewteen points are determined,
+  and how pixel positions are calculated
+- what to call the end product of the make process
+  EXEC  = <name.so>
+  makefile lines 8--10
+  for my python wrapper for this, I assume the following format is used:
+  o Exec = HsmlAndProject_v3_<notree_><kernel><_perbc><_omp>.so
+  o notree_ should be included if compiled with OPTIONS += -DNOTREE 
+    (lines 16--17)
+  o kernel = name of the used kernel. C2 and gadget are the standards, others 
+    are not included as options in the wrapper
+  o _perbc is included if compiled with OPTIONS += -DPERIODIC
+  o _omp is inlcuded if compiled with DOOPENMP += -fopenmp 
+    (see parallel notes)
+There are default makefiles provided for the different options.
+
+
+-------------------------------------------------------------------------------
+Differences between my HsmlAndProject version and the version I started with, 
+independent of OpenMP:
+-------------------------------------------------------------------------------
+Technical:
+- I changed the data type of NumPart from int to long int. This was to project 
+  the entire 100 cMpc EAGLE box in one go. I only made this change in main.c
+  though, and not in the tree building, peano-hilbert sorting, etc. functions. 
+  The long int should be cast to an integer if these functions are called, but
+  I have not tested this, and the tree building will in any case fail in some 
+  cases where the projection routine would work. To avoid these issues use 
+- the NOTREE compile option. Tree building is not done, and neither is the 
+  Hsml =/= 0 check if NOTREE is defined. (Smoothing lengths for Hsml = 0 
+  particles are then set to hmin.) 
+  I highly recommend turning this on for gas projections! Since the smoothing
+  lengths are known anyway, the tree building will not have added value for the
+  projections, and only costs time.
+Output difference:
+- I changed handling of smaller than grid cell smoothing lengths. In the 
+  original version, the minimum smoothin length was set to half the smallest 
+  pixel dimension, ensuring that particles with very small smoothing length were 
+  projected into at most one cell. Sometimes, however, this leads to particles 
+  being projected into no cells at all, causing mass loss in the projection. I 
+  prefer using the cell diagonal as a minimum, ensuring projection into at 
+  least one cell, with the downside that small particles might be somewhat 
+  'oversmoothed'. 
+
+
+-------------------------------------------------------------------------------
+Notes on the parallel implementation, and how to use the compile options in the
+makefile:
+-------------------------------------------------------------------------------
+Most files have _omp in their names, indicating that I have changed them to be 
+compatible with the parallelistaion. However, for all the .c files except 
+main.c, this only means that they include the _omp .h files, instead of other 
+versions. In proto_v3_omp.h and allvars_v3_omp.h, I added a function and 
+structure used for the 'array reduction' parallel implementation. 
+
+main_v3_omp.c is where the real changes are. I have left different parallel 
+implementations ready for use, as complile options. This has the disadvantage 
+of making the code look a bit messy.
+
+The basic idea of the parallel implementation is that different threads 
+project their own set of particles onto a grid. The methods differ on how these
+projections are combined into a single output.
+- With the ATOMIC method, all threads write their results into the same, single
+  output array. Race conditions (errors in the calculation caused by different 
+  threads accessing or changing the same data at the same time) are avoided by
+  OpenMP's atomic statement, which checks that only one thread is updating a 
+  memory location at any given time
+  This method is relatively light on memory.
+- With the LOCKS method, the idea is similar: all threads write to one array,
+  but we need to make sure only one thread accesses an array element at once.
+  Since each thread writes to the Value and ValueQuantity arrays in short 
+  succession, here the check happens only once. An array of locks is needed, 
+  and before updating array values, each array sets the lock at the index it 
+  wants to write to, preventing any other threads from changing the value until
+  the first thread is done and unsets the lock.
+  This does require creating an array as large as each of the output arrays, 
+  and is therefore fairly costly for my purposes. A sub-option is to set a value
+  for ARRCHUNKPIX: then, the locks are unique for an ARRCHUNKPIX^2 block of 
+  pixels, reducing the size of the array of locks, but increasing the 
+  'cross-section' for threads having to wait for each other.
+- The array REDUCTION method is the fastest, but very memory-consuming. Here, 
+  each threads gets its own Value and ValueQuantity arrays, and they are all 
+  combined to get a final result. I wrote this for OpenMP version 4.0, which
+  did not have reductions over arrays built in, so this is implemented with
+  some small home-made functions in OpenMP's general function reduction 
+  framework.
+
+To use these implementions, use the
+DOOPENMP += -fopenmp
+line in the makefile, and set 
+DOOPENMP += -DDO<implementation>
+for the implementation you want. 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+If you set -fompenmp, but do not set an implementation, the projection will 
+run, but with no checks on race conditions. 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Race conditions are generally rare in the EAGLE projection I tested, so the 
+error may not be immediately clear from the results. 
+
+If you select the LOCKS options, you can set 
+DOOPENMP += -DARRCHUNKPIX=10
+to block simultatenous updates of 10x10 blocks of pixels. (Other values are 
+possible.)
+
+Compiling wihtout -fopenmp and the OpenMP options just gives the serial 
+version.
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Using more than one implmentation at once can cause calculation errors 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+(expected for combinations with REDUCTION), or unnecessary slow-downs. 
+Selecting an implementation without -fopenmp should just give the SERIAL 
+version, just like if none of the OpenMP-related options are used, and 
+ARRCHUNKPIX without LOCKS also should not cause trouble. Try to avoid this, 
+though, since I have not tested this.
+
+
+Other options for the parallel version are
+DOOPENMP += -DDOALLPAR
+and
+DOOPENMP += -DSCHEDULE=<schedule>
+DOALLPAR controls whether some operations aside from the main particle loop are 
+done in parallel, and SCHEDULE controls how the particles in the loop are 
+divided over the threads. This is inputted directly into the schedule function 
+in omp parallel for ( schedule(SCHEDULE) ); check the OpenMP documentation for 
+the options and what it does, and the recommendations for some examples.
+
+
+-------------------------------------------------------------------------------
+Recommemdations for implementation choice:
+-------------------------------------------------------------------------------
+I timed the projections for a projection of L0012N0188, projecting a slice of 
+6.25 cMpc depth x 12.5^2 cMpc onto a 4000^2 pixel grid. This is the same 
+physical resolution and slice depth as I use in my 'production projections', 
+running on 4 cores. This test, and the fact that the pixel grids in my main 
+projections are large (4GB), are what these figures and recommendations are 
+based on.
+
+First, DOALLPAR did not seem to have much effect, and was sometimes faster and
+sometimes slower. I tend to use this option, but I don't think it matters much.
+
+The fastest option is REDUCTION, but like mentioned above, it has a large 
+memory footprint (it has a peak usage of 
+number of threads * 2 * size of Value array, not counting the input arrays of 
+particle data). Use this if you can afford the memory use. Otherwise, the 
+ATOMIC method seems to barely edge out LOCKS. Using ARRCHUNKPIX slows LOCKS 
+down a little, but at 10x10 pixels, the difference is neglible, (~1%, likely 
+not significant), while cutting back on memory use. LOCKS and ATOMIC are about 
+10% slower than array reduction.
+
+The choice of scheduler matters, with ~20% differences for 'reasonable' choices.   
+For LOCKS and atomic, I found the best option was
+DOOPENMP += -DSCHEDULE=dynamic,30000
+but the differences with dynamic,3000 seem neglibile. Other options I tried were
+static; dynamic,300000; guided; guided,3000; guided,30000
+
+
+

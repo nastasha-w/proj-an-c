@@ -1,0 +1,8 @@
+#!/bin/sh
+
+MAKEFILES=./makefiles_defaults/Makefile_*
+for f in $MAKEFILES
+do
+  echo "cleaning up $f"
+  make clean -f $f
+done

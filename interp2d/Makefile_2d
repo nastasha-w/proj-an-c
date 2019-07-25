@@ -1,0 +1,31 @@
+# modified from Makefile in same folder for HsmlAndProject.so
+
+# turns on warnings for if T/rho are out of interpolation bounds
+# OPTIONS = -DBOUNDSWARNINGS
+
+EXEC  = interp2d.so
+
+OBJS   =  interp2d.o
+
+INCL = Makefile_2d
+
+# Wall: warning option, fPIC: suitable for dynamic linking, 
+# mcmodel: machine-specific, something to do with code size (copied from HsmlAndProject make)
+# -D<bla>: adds #Define <bla> = 1 to the file
+# ld creates executable file or library out of object files, sometimes -shared needed
+# ld: dynamic linker
+ 
+CFLAGS =  -O3 $(OPTIONS) -fPIC -Wall -mcmodel=medium
+LNKCMD =  ld -shared
+
+LIBS   =  -lm -g
+
+CC     =  gcc
+
+$(EXEC): $(OBJS)
+	 $(LNKCMD)  $(OBJS) $(LIBS)  -o $(EXEC)
+
+$(OBJS): $(INCL)
+
+clean:
+	 rm -f $(OBJS) $(EXEC)

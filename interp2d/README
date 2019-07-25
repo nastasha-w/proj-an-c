@@ -1,0 +1,66 @@
+Documentation for interp
+
+description
+------------
+Does 3d and 2d linear table interpolation. Tables can have grid that are 
+equally or unequally spaced, and can be increasing or decreasing. However, the
+index finding for the apropriate points in non-equally spaced tables is not
+efficient (it just walks through the values). For values outside the grid 
+range, the edge values of the table are used.
+
+Note that more than half of the code here is just for tests.
+
+interp2d and Makefile_2d contain an older 2d interpolation function.
+
+
+compiling
+----------
+
+make
+
+
+Options
+--------
+Parallel:
+The Makefile contains the line 
+Options += -fopenmp
+Remove this line or comment it out to compile without OpenMP parallelisation.
+Remember to set OMP_NUM_THREADS when running a parallel program to avoid 
+taking up your whole system!
+
+Warnings:
+You can set the BOUNDSWARNINGS flag in the Makefile if you want the program to
+print a warning any time you need to extrapolate to get a value.
+
+DEBUG:
+Set this flag if you want an overview of the (intermediate) values used in each
+interpolation that is done. DEBUG2 means printing the grid spacing that is 
+initially set.
+ 
+
+tests
+------
+make test
+./interp_test
+
+(with or without OpenMP) makes and runs a simple executable for the 
+interpolation program. This runs a battery of test cases: grids are chosen, and
+a table is generated using a function linear in all three arguments (for two 
+functions), and this is interpolated on sets of test values that include all 
+combinations of edge and center options. The outcome is compared to the result
+of calculating the same linear function on the same test values, or the grid
+edge values as applicable. Small differences might arise due to floating point 
+errors. To pass the test, all values must agree to a relative difference of 
+1e-5. (Or an absolute difference of this size if one of the values is zero.)
+
+In the tests, different grids are used: increasing/decreasing and equal/unequal
+spacing, in all combinations of the different table edges. This gives 64 tests
+on 2 functions for interpolate_3d and 16 tests on 2 functions for 
+interpolate_2d. The same tests are also run on piecewise linear functions to
+check that the interpolation is being done from the right values. (In a linear
+function, this algorithm will give a correct result when interpolating a value
+from any 2^dimensions points, even if it's actually extrapolation.)
+
+
+
+

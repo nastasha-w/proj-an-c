@@ -1,0 +1,25 @@
+How to install on galaxy in Leiden (although this should work on any computer with python and an hdf5 installation):
+
+In a terminal, ssh to "galaxy" by typing
+
+ssh -Y galaxy
+
+In the read_eagle folder, type:
+
+make clean
+python ./setup.py install --user
+
+This will install the read_eagle library into your local python folder.
+(probably something like /home/USERNAME/.local/lib/python2.7/site-packages/)
+
+If it doesn't work probably the hdf5 path (or some other path) is wrong. Set it in setup.py. If you are installing this on galaxy this is just /usr/.
+
+Then, manually copy read_eagle_files.py into your local python folder (see above).
+
+Bada bing bada boom! Try out the readEagleExample scripts! In Leiden the EAGLE data is at /disks/eagle/.
+
+This works with python 2.7, not sure about any other versions though, so if it doesn't work check that your python version is up to date (as well as numpy, etc)
+
+If you still end up smashing your head repeatedly against the wall in frustration, contact me (Chris Barber) at cbar@strw.leidenuniv.nl.
+
+
