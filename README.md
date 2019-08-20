@@ -7,15 +7,9 @@ This package contains what should be all the files you need to run my python
 wrapper for HsmlAndProject. If you only want HsmlAndProject, or its OpenMP
 version, you can ignore everything but the HsmlAndProject_OMP directory.
 
-The python wrapper is under (constant) developement, and may contain errors,
-bugs, and features that do not do what you think. You have been warned! That 
-being said, I have included a script that should let you get most of the 2d 
-projections you want out of the EAGLE simulations. The script is reasonably
-tested for BAHAMAS.
+The python wrapper is contained in the proj-an repo. 
+The script is reasonably tested for BAHAMAS.
 
-This only includes what is needed to make 2d column projections, and one file
-useful for testing. Scripts to, for example, extract column density 
-distributions or radial profiles from these maps are not included.
 
 -------------------------------------------------------------------------------
 Contents
@@ -40,20 +34,20 @@ Instructions
 -------------------------------------------------------------------------------
 To run all of this, you will need a C compiler, with an OpenMP installation for
 the OMP versions, to compile the C functions used here. The makefiles included 
-here use gcc. The python scripts are written for python 2.7. I have not 
-included Serena Bertone's ion balance or emission tables, but you will need 
-these (or similar tables in the same format) to calculate column densities or
-surface brightnesses respectively. (Ion balance tables are part of my 
-specwizard package.) To use simulation outputs, you will, of course, also need 
-access to those outputs. 
+here use gcc. 
+I have not included Serena Bertone's ion balance or emission tables, but you 
+will need these (or similar tables in the same format) to calculate column 
+densities or surface brightnesses respectively. (Ion balance tables are part of 
+my specwizard package.) To use simulation outputs, you will, of course, also 
+need access to those outputs. 
 
-To get the python wrapper working, compile the HsmlAndProject versions in the 
-HsmlAndProject_OMP folder (instructions in folder), make sure read_eagle and
-read_eagle_files are set up (see readEagle_install and the instructions inside)
-and the 2d interpolation scheme used for ion balance and emission tables in 
-interp2d (Just run make in that folder. make clean also works there).
+To get the python wrapper on proj-an working, compile the HsmlAndProject versions 
+in the  HsmlAndProject_OMP folder (instructions in folder), make sure read_eagle 
+and read_eagle_files are set up (see readEagle_install and the instructions 
+inside) and the 2d interpolation scheme used for ion balance and emission tables 
+in interp2d (Just run make in that folder. make clean also works there).
 
-For instructions on the python wrapper itself, see the python_wrapper folder.
+For instructions on the python wrapper itself, see the proj-an folder.
 
 
 
