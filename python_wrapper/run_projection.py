@@ -1,0 +1,62 @@
+import make_maps_v3_master as mmap
+
+
+# basic box and projection region parameters (splitting into (sub)slices is done later)
+simulation = 'eagle'
+simnum = 'L0025N0376'
+snapnum = 28
+npix_x=256
+npix_y=256
+
+L_x = 25.
+L_y = 25.
+L_z = 25.
+centre = [12.5,12.5,12.5]
+axis = 'z'
+
+periodic = True
+kernel = 'C2'
+
+parttype = '0'
+
+ptypeW = 'basic'
+ionW = None
+abundsW = 'Pt'
+quantityW = 'Mass'
+excludeSFRW = 'T4'
+
+ptypeQ = None
+
+saveres = True
+log = True
+ompproj = True
+
+
+
+print('\n')
+
+print('Overview of function input parameters: [cMpc] where applicable \n')
+print('simnum: \t %s' %simnum)
+print('snapnum: \t %i' % snapnum)
+print('centre: \t %s' %str(centre))
+print('L_x, L_y, L_z: \t %f, %f, %f \n' %(L_x, L_y, L_z))
+
+print('kernel: \t %s' %kernel)
+print('axis: \t %s' %axis)
+print('periodic: \t %s' %str(periodic))
+print('npix_x,npix_y: \t %i, %i \n' %(npix_x, npix_y))
+
+print('saveres: \t %s' %str(saveres))
+print('log: \t %s' %str(True))
+
+print('\n')
+
+# function call
+mmap.make_map(simnum, snapnum, centre, L_x, L_y, L_z, npix_x, npix_y, \
+         ptypeW,\
+         ionW = ionW, abundsW = abundsW, quantityW = quantityW,\
+         parttype = parttype,
+         axis = axis, log = log,\
+         periodic = periodic, saveres = saveres,\
+         simulation = simulation,\
+         ompproj = ompproj)

@@ -1,0 +1,79 @@
+
+
+Overview of function input parameters: [cMpc] where applicable 
+
+simnum: 	 L0025N0376
+snapnum: 	 28
+centre: 	 [12.5, 12.5, 12.5]
+L_x, L_y, L_z: 	 25.000000, 25.000000, 25.000000 
+
+kernel: 	 C2
+axis: 	 z
+periodic: 	 True
+npix_x,npix_y: 	 256, 256 
+
+saveres: 	 True
+log: 	 True
+
+
+Processed input:
+iseltW, iseltQ, simnum, snapnum, centre, L_x, L_y, L_z, npix_x, npix_y,
+False False L0025N0376 28 [12.5, 12.5, 12.5] 25.0 25.0 25.0 256 256 ptypeW, ionW, abundsW, quantityW, ionQ, abundsQ, quantityQ, ptypeQ, excludeSFRW, excludeSFRQ, parttype,
+basic None Pt Mass None auto None None False False 0
+theta, phi, psi, var, axis, log, velcut, periodic, kernel, saveres, simulation, LsinMpc, ompproj
+0.0 0.0 0.0 REFERENCE z True False True C2 True eagle True True
+
+
+trying to read data from  /disks/eagle/L0025N0376//REFERENCE/data/snapshot_028_z000p000/snap_028_z000p000.
+saving W result to: Mass_L0025N0376_28_test3.21_C2Sm_256pix_25.0slice_z-projection_wiEOS
+
+None
+[read_eagle_file] reading variable  PartType0/Mass
+[read_eagle_file] finished reading snapshot
+
+[read_eagle_file] reading variable  PartType0/Coordinates
+[read_eagle_file] finished reading snapshot
+
+Translating particle positions: (12.50, 12.50, 12.50) -> (12.50, 12.50, 12.50) Mpc
+[read_eagle_file] reading variable  PartType0/SmoothingLength
+[read_eagle_file] finished reading snapshot
+
+
+--- Calling findHsmlAndProject ---
+
+Total quantity W in: 6.30070e+03
+Total quantity Q in: 0.00000e+00
+Using projection file: ../HsmlAndProject_OMP/HsmlAndProject_v3_notree_C2_perbc_omp.so 
+
+----------
+NumPart = 50652222
+P = 0x7f91a324b010 
+Hsml = 0x7f91eb9a0010 
+Mass = 0x7f91df866010 
+Quantity = 0x7f9197111010 
+Xmin = 0.000000, Xmax = 25.000000 
+Ymin = 0.000000, Ymax = 25.000000 
+Zmin = 0.000000, Zmax = 25.000000 
+Xpixels = 256, Ypixels = 256 
+DesDensNgb = 58 
+Axis1 = 0, Axis2 = 1, Axis3 = 2
+Hmax = 12.500000 
+BoxSize = 25 
+Value = 0x2043950
+ValueQuantity = 0x2144100
+
+Kernel: Wendland C2
+
+projecting
+Running make_map with OpenMP on 8 cores
+
+Total time for HsmlAndProject loop execution (omp_get_wtime): 7.20306 s
+Total time for HsmlAndProject loop execution: 57.2 s
+done
+min(Value) = 0.013997, max(Value) = 4.127790
+min(ValueQuantity) = 0.000000, max(ValueQuantity) = 0.000000
+----------
+Total quantity W in:  6.30070e+03
+Total quantity W out: 6.30070e+03
+Total quantity Q in:  0.00000e+00
+Total quantity Q out: 0.00000e+00

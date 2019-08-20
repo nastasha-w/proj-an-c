@@ -106,7 +106,7 @@ n9 = ['InertiaTensor']
 filename_options = ['snap', 'snip', 'group', 'group_snip', 'sub', 'sub_snip', 'particles', 'particles_snip']
 
 class read_eagle_file():
-    def __init__(self, model_dir, filename, snapnum, suppress=True, gadgetunits=False, subsample_factor=1, add_data_to_model_dir=True):
+    def __init__(self, model_dir, filename, snapnum, suppress=True, gadgetunits=False, subsample_factor=1):
    
         if filename not in filename_options:
             print "[read_eagle_file] ERROR: This filename is not supported, please choose from:"
@@ -115,7 +115,7 @@ class read_eagle_file():
             exit(-1)
 
         self.filename = filename
-        self.fname = self.get_full_dir(model_dir, filename, snapnum, add_data_to_model_dir=add_data_to_model_dir)
+        self.fname = self.get_full_dir(model_dir, filename, snapnum)
         print "trying to read data from ", self.fname
         self.subsample_factor = int(subsample_factor)   # deliberately an integer!
         self.snap = snapnum
@@ -123,12 +123,9 @@ class read_eagle_file():
         return
 
 
-    def get_full_dir(self, model_dir, filename, snapnum, add_data_to_model_dir=True):
+    def get_full_dir(self, model_dir, filename, snapnum):
         """Get filename, including full path"""
-        if add_data_to_model_dir:
-            dirpath = model_dir+"/data/"
-        else:
-            dirpath = model_dir
+        dirpath = model_dir+"/data/"
         if filename == 'snap':
             #check to see if using new file format
             try:
