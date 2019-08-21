@@ -180,3 +180,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+## compiled test file
+interp2d/interp_test
