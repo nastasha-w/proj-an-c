@@ -109,14 +109,14 @@ class read_eagle_file():
     def __init__(self, model_dir, filename, snapnum, suppress=True, gadgetunits=False, subsample_factor=1, add_data_to_model_dir=True):
    
         if filename not in filename_options:
-            print "[read_eagle_file] ERROR: This filename is not supported, please choose from:"
-            print filename_options
-            print "exiting...."
+            print("[read_eagle_file] ERROR: This filename is not supported, please choose from:")
+            print(filename_options)
+            print("exiting....")
             exit(-1)
 
         self.filename = filename
         self.fname = self.get_full_dir(model_dir, filename, snapnum, add_data_to_model_dir=add_data_to_model_dir)
-        print "trying to read data from ", self.fname
+        print("trying to read data from %s"%self.fname)
         self.subsample_factor = int(subsample_factor)   # deliberately an integer!
         self.snap = snapnum
 
@@ -244,8 +244,8 @@ class read_eagle_file():
                 except:
                     f = h5py.File( fname, 'r')
         except:
-            print "[read_eagle_file] ERROR: File", fname, "does not exist/can not be opened"
-            print "exiting...."
+            print("[read_eagle_file] ERROR: File" + fname + "does not exist/can not be opened")
+            print("exiting....")
             exit(-2)
 
         self.NumFiles = f['Header'].attrs['NumFilesPerSnapshot']
@@ -361,7 +361,7 @@ class read_eagle_file():
                     self.a_scaling = -1.0
 
             except:
-                print "Warning, no conversion factors found in file 0!"
+                print("Warning, no conversion factors found in file 0!")
                 self.a_scaling = 0
                 self.h_scaling = 0
                 self.CGSconversion = 1
@@ -381,26 +381,26 @@ class read_eagle_file():
                     f.set_sampling_rate(1/self.subsample_factor)
                 f.select_region(*region)
                 #read data from first file
-                if not(suppress): print '[read_eagle_file] reading variable ', var
+                if not(suppress): print('[read_eagle_file] reading variable %s'%var)
                 self.data = f.read_dataset(parttype, var[9:])
                 f.close()
             except:
-                print 'Warning: No hash tables!  Any region selection is ignored.'
+                print('Warning: No hash tables!  Any region selection is ignored.')
                 self.data = self.read_nohashtable_array( var, gadgetunits=gadgetunits, suppress=suppress, interval=interval )
 
             if not(gadgetunits):
                 conversion = self.a ** self.a_scaling * (self.h ** self.h_scaling) * self.CGSconversion
                 if not(suppress):
-                    print '[read_eagle_file] converting to physical quantities in CGS units: '
-                    print '                     aexp-scale-exponent = ', self.a_scaling
-                    print '                     h-scale-exponent    = ', self.h_scaling
-                    print '                     CGSConversionFactor = ', self.CGSconversion
+                    print('[read_eagle_file] converting to physical quantities in CGS units: ')
+                    print('                     aexp-scale-exponent = %s'%self.a_scaling)
+                    print('                     h-scale-exponent    = %s'%self.h_scaling)
+                    print('                     CGSConversionFactor = %s'%self.CGSconversion)
                     
 
                 self.data = self.data*conversion
-                if not(suppress): print '[read_eagle_file] returning data in CGS units'
-            if not(suppress): print '[read_eagle_file] finished reading snapshot'
-            if not(suppress): print 
+                if not(suppress): print('[read_eagle_file] returning data in CGS units')
+            if not(suppress): print('[read_eagle_file] finished reading snapshot')
+            if not(suppress): print('') 
 
             return self.data
         
@@ -414,7 +414,7 @@ class read_eagle_file():
             elif 'Subhalo' in var:
                 parttype = 1 #we set NumPartTot[1] to the total number of subhalos in get_full_dir()
             if self.NumPartTot[parttype] == 0:
-                print "No particles of type ", parttype, " in snapshot ", self.snap
+                print("No particles of type %s"%parttype + " in snapshot %s"%self.snap)
                 return []
 
             #set up multi-dimensional arrays
@@ -434,7 +434,7 @@ class read_eagle_file():
 
 
             #read data from first file
-            if not(suppress): print '[read_eagle_file] reading variable ', var
+            if not(suppress): print('[read_eagle_file] reading variable %s'%var)
 
             # loop over files to find the first one with data in it.
             read=True
@@ -450,11 +450,11 @@ class read_eagle_file():
                 elif 'Subhalo' in var:
                     Ndata = f['Header'].attrs['Nsubgroups']
                 if Ndata == 0:
-                    if not suppress: print "Num part in file", j, " is ", Ndata, "continuing..."
+                    if not suppress: print("Num part in file " + str(j) + " is " + str(Ndata) + " continuing...")
                     f.close()
                     j = j + 1
                     if j >= self.NumFiles :
-                        print "No particles found in any file!!!"
+                        print("No particles found in any file!!!")
                         return self.data
                 else:
                     if withdata < 0: withdata = j
@@ -494,15 +494,15 @@ class read_eagle_file():
         if not(gadgetunits):
             conversion = self.a ** self.a_scaling * (self.h ** self.h_scaling) * self.CGSconversion
             if not(suppress):
-                print '[read_eagle_file] converting to physical quantities in CGS units: '
-                print '                     aexp-scale-exponent = ', self.a_scaling
-                print '                     h-scale-exponent    = ', self.h_scaling
-                print '                     CGSConversionFactor = ', self.CGSconversion
+                print('[read_eagle_file] converting to physical quantities in CGS units: ')
+                print('                     aexp-scale-exponent = %s'%self.a_scaling)
+                print('                     h-scale-exponent    = %s'%self.h_scaling)
+                print('                     CGSConversionFactor = %s'%self.CGSconversion)
                 
             self.data = self.data*conversion
-            if not(suppress): print '[read_eagle_file] returning data in CGS units'
-        if not(suppress): print '[read_eagle_file] finished reading snapshot'
-        if not(suppress): print 
+            if not(suppress): print('[read_eagle_file] returning data in CGS units')
+        if not(suppress): print('[read_eagle_file] finished reading snapshot')
+        if not(suppress): print('') 
 
         return self.data
 
@@ -519,7 +519,7 @@ class read_eagle_file():
                 self.data = N.append(self.data, self.dummy, axis=1)
             return True
         except:
-                print '[read_eagle_file] ERROR: Variable '+var+' not found, file ', j
+                print('[read_eagle_file] ERROR: Variable ' + str(var) + ' not found, file '+ str(j))
                 return False
 
     def read_group_array(self, var, gadgetunits=False, suppress=False, interval=1):
@@ -551,7 +551,7 @@ class read_eagle_file():
             self.data = N.empty([0])
 
         #read data from first file
-        if not(suppress): print '[read_eagle_file] reading variable ', var
+        if not(suppress): print('[read_eagle_file] reading variable %s'%var)
 
         # loop over files to find the first one with data in it.
         j = 0
@@ -572,11 +572,11 @@ class read_eagle_file():
                 elif 'Subhalo' in var:
                     len = f['Header'].attrs['Nsubgroups']
             if len == 0:
-                if not suppress: print "Num part in file", j, " is ", len, "continuing..."
+                if not suppress: print("Num part in file " + str(j) + " is " + str(len) + " continuing...")
                 f.close()
                 j = j + 1
                 if j >= self.NumFiles :
-                    print "No particles found in any file!!!"
+                    print("No particles found in any file!!!")
                     # exit()  # don't want to exit , this might be high z
         # now we know the first file "j" has particles in it.
         self.read_nohashtable_var(f, var, j,  suppress)
@@ -613,7 +613,7 @@ class read_eagle_file():
                 elif 'Subhalo' in var:
                     len = f['Header'].attrs['Nsubgroups']
             if len == 0 :
-                if not suppress: print "Num part in file", j, " is ", len, "continuing..."
+                if not suppress: print("Num part in file " + str(j) + " is " + str(len) + " continuing...")
                 continue
 
             #if not(suppress): print '     reading file - part ', j 
@@ -652,8 +652,8 @@ class read_eagle_file():
                 self.data = N.append(self.data, self.dummy, axis=1)
             return True
         except:
-                print '[read_eagle_file] ERROR: Variable '+var+' not found, file ', j
-                print "[read_eagle_file] returning value of False"
+                print('[read_eagle_file] ERROR: Variable ' + str(var) + ' not found, file %s'%j)
+                print("[read_eagle_file] returning value of False")
                 #self.data = N.append( self.data, f[var][::self.subsample_factor], axis=0)
                 return False
 
@@ -671,7 +671,7 @@ class read_eagle_file():
             elif 'ElementAbundance' in string[-2]:
                 parttype = N.int(string[-3][-1])
             else:
-                print "WARNING: Test functionality doesn't exist for ", var
+                print("WARNING: Test functionality doesn't exist for %s"%var)
                 return 
 
         else:
@@ -682,14 +682,14 @@ class read_eagle_file():
             elif 'Subhalo' in var:
                 parttype = 1 #we set NumPartTot[1] to the total number of subhalos in get_full_dir()
             else:
-                print "WARNING: Test functionality doesn't exist for ", var
+                print("WARNING: Test functionality doesn't exist for %s"%var)
                 return 
 
 
         if 'ParticleIDs' not in var:
             if data_len != self.NumPartTot[parttype] and self.subsample_factor == 1:
-                print '[read_eagle_file] ERROR: Length of', var, ' should be', self.NumPartTot[parttype], ', array of length ', data_len, 'read in!'
-                print "[read_eagle_file] Exiting..."
+                print('[read_eagle_file] ERROR: Length of ' + str(var) + ' should be ' + str(self.NumPartTot[parttype]) + ', array of length ' + str(data_len) + ' read in!')
+                print("[read_eagle_file] Exiting...")
                 exit(-1)
         
         return
@@ -701,17 +701,17 @@ if __name__ == "__main__":
     dir = '/gpfs/data/Eagle/mfTestRuns/CodeDev/SubFind/AddVariables'
     snap = 28
 
-    print 'Testing groupfile'
+    print('Testing groupfile')
     f = read_eagle_file(dir, 'group', snap)
     data = f.read_data_array('/FOF/Mass', requiredlength=10)
 
-    print 'Testing snapshot'
+    print('Testing snapshot')
     f = read_eagle.EagleSnapshot("/gpfs/data/Eagle/mfTestRuns/CodeDev/SubFind/AddVariables/data/snapshot_028_z000p000/snap_028_z000p000.0.hdf5" )
     f.close()
     read = read_eagle_file(dir, 'snap', snap)
     start=time.time()
     mass = read.read_data_array('PartType0/Mass')
-    print time.time() - start
+    print(time.time() - start)
  
     exit()
 

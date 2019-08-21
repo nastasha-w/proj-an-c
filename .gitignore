@@ -180,3 +180,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+### outdated python_wrapper
+
+./python_wrapper

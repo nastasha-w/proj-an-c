@@ -247,16 +247,16 @@ class Gadget(object):
         f = h5py.File(self.filename + str(j) + '.hdf5', 'r')
         try:
             items = f[var].items()
-            print 'Items:'
+            print('Items:')
             pprint.pprint(items)
-            print '============================================================'
+            print('============================================================')
         except AttributeError:
-            print '%s is not an HDF5 group'%var
+            print('%s is not an HDF5 group'%var)
 
         attrs = f[var].attrs.items()
-        print 'Attrs:'
+        print('Attrs:')
         pprint.pprint(attrs)
-        print '============================================================'
+        print('============================================================')
 
     # --------------------------------------------------------------------------
     def convert_cgs(self, var, j, verbose=True):
@@ -279,7 +279,7 @@ class Gadget(object):
                 self.CGSconversion = f[metal].attrs['CGSConversionFactor']
 
         except:
-            print 'Warning: no conversion factors found in file 0 for %s!'%var
+            print('Warning: no conversion factors found in file 0 for %s!'%var)
             self.a_scaling = 0
             self.h_scaling = 0
             self.CGSconversion = 1
@@ -289,10 +289,10 @@ class Gadget(object):
                       self.CGSconversion)
 
         if verbose:
-            print 'Converting to physical quantities in CGS units: '
-            print 'a-exp-scale-exponent = ', self.a_scaling
-            print 'h-scale-exponent     = ', self.h_scaling
-            print 'CGSConversionFactor  = ', self.CGSconversion
+            print('Converting to physical quantities in CGS units: ')
+            print('a-exp-scale-exponent = %s'%self.a_scaling)
+            print('h-scale-exponent     = %s'%self.h_scaling)
+            print('CGSConversionFactor  = %s'%self.CGSconversion)
 
         return conversion
 
@@ -325,7 +325,7 @@ class Gadget(object):
                                                 gadgetunits=gadgetunits,
                                                 verbose=verbose)
 
-        if verbose: print 'Finished reading snapshot'
+        if verbose: print('Finished reading snapshot')
         return self.data
 
     # --------------------------------------------------------------------------
@@ -345,7 +345,7 @@ class Gadget(object):
         self.data = np.empty([0])
 
         #read data from first file
-        if verbose: print 'Reading variable ', var
+        if verbose: print('Reading variable %s'%var)
 
         # loop over files to find the first one with data in it
         # j tracks file number
@@ -378,7 +378,7 @@ class Gadget(object):
                         Ndata = f['SUBFIND'].attrs['Number_of_subgroups']
 
             if Ndata == 0:
-                if verbose: print 'Npart in file %i is %i continuing...'%(j, Ndata)
+                if verbose: print('Npart in file %i is %i continuing...'%(j, Ndata))
                 f.close()
                 j += 1
                 if j >= self.num_files :
@@ -386,7 +386,7 @@ class Gadget(object):
                     return self.data
             else:
                 if withdata < 0: withdata = j
-                if verbose: print 'Npart in file %i is %i continuing...'%(j, Ndata)
+                if verbose: print('Npart in file %i is %i continuing...'%(j, Ndata))
                 # read data
                 self.append_result(f, var, j,  verbose)
                 f.close()
@@ -398,9 +398,9 @@ class Gadget(object):
         if not gadgetunits:
             conversion = self.convert_cgs(var, j-1, verbose=verbose)
             self.data = self.data * conversion
-            if verbose: print 'Returning data in CGS units'
+            if verbose: print('Returning data in CGS units')
 
-        if verbose: print 'Finished reading data'
+        if verbose: print('Finished reading data')
 
         # still need to reshape output
         if string[-1] in n3:
@@ -429,7 +429,7 @@ class Gadget(object):
         self.data = np.empty([0])
 
         #read data from first file
-        if verbose: print 'Reading variable ', var
+        if verbose: print('Reading variable %s'%var)
 
         # loop over files to find the first one with data in it
         # j tracks file number
@@ -457,7 +457,7 @@ class Gadget(object):
                 elif 'ParticleID' in var:
                     Ndata = f['IDs'].attrs['Nids']
             if Ndata == 0:
-                if verbose: print 'Npart in file %i is %i continuing...'%(j, Ndata)
+                if verbose: print('Npart in file %i is %i continuing...'%(j, Ndata))
                 f.close()
                 j += 1
                 if j >= self.num_files :
@@ -465,7 +465,7 @@ class Gadget(object):
                     return self.data
             else:
                 if withdata < 0: withdata = j
-                if verbose: print 'Npart in file %i is %i continuing...'%(j, Ndata)
+                if verbose: print('Npart in file %i is %i continuing...'%(j, Ndata))
                 # read data
                 self.append_result(f, var, j,  verbose)
                 f.close()
@@ -477,9 +477,9 @@ class Gadget(object):
         if not gadgetunits:
             conversion = self.convert_cgs(var, j-1, verbose=verbose)
             self.data = self.data * conversion
-            if verbose: print 'Returning data in CGS units'
+            if verbose: print('Returning data in CGS units')
 
-        if verbose: print 'Finished reading data'
+        if verbose: print('Finished reading data')
 
         # still need to reshape output
         if string[-1] in n3:
@@ -500,7 +500,7 @@ class Gadget(object):
             self.data = np.append(self.data, f[var][:].flatten(), axis=0)
             return
         except KeyError:
-            print 'KeyError: Variable ' + var + ' not found in file ', j
-            print 'Returning value of False'
+            print('KeyError: Variable ' + var + ' not found in file %s'%j)
+            print('Returning value of False')
             return False
 # ==============================================================================
