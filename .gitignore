@@ -182,6 +182,10 @@ dmypy.json
 .pyre/
 
 
-### outdated python_wrapper
 
+### outdated python_wrapper
 ./python_wrapper
+
+## compiled test file
+interp2d/interp_test
+
