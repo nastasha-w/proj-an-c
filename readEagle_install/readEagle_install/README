@@ -1,3 +1,7 @@
+# originally by Chris Barber
+# around read_eagle by John Helly
+# minor modifications and notes on some more computer systems by Nastasha Wijers
+
 How to install on galaxy in Leiden (although this should work on any computer with python and an hdf5 installation):
 
 In a terminal, ssh to "galaxy" by typing
@@ -12,14 +16,18 @@ python ./setup.py install --user
 This will install the read_eagle library into your local python folder.
 (probably something like /home/USERNAME/.local/lib/python2.7/site-packages/)
 
-If it doesn't work probably the hdf5 path (or some other path) is wrong. Set it in setup.py. If you are installing this on galaxy this is just /usr/.
+To install on Ozstar, the current default setup is for python3, so do all of this in the read_eagle_python3 directory. _python2p7 is an older version included for completeness. Since the hdf5 location seems to depend on loaded module on this system, you may need to change the hdf5_location in setup.py compared to _python3 for this.
 
-Then, manually copy read_eagle_files.py into your local python folder (see above).
+If it doesn't work probably the hdf5 path (or some other path) is wrong. Set it in setup.py. If you are installing this on galaxy this is just /usr/. Notes on what this path is for a few systems are in setup.py. If it's not in there, it can be a pain to find the location. On Ozstar, the error message for an h5py import gave a good clue on where to look for hdf5... 
+
+Then, manually copy read_eagle_files.py into your local python folder (see above). If you're installing read_eagle for different python versions, don't forget to put a copy in the different paths!
 
 Bada bing bada boom! Try out the readEagleExample scripts! In Leiden the EAGLE data is at /disks/eagle/.
 
-This works with python 2.7, not sure about any other versions though, so if it doesn't work check that your python version is up to date (as well as numpy, etc)
+This works with python 2.7, not sure about any other versions though, so if it doesn't work check that your python version is up to date (as well as numpy, etc). read_eagle_python2p7 won't work for python3. read_eagle_python3, an update by John Helly, should do the trick.
 
-If you still end up smashing your head repeatedly against the wall in frustration, contact me (Chris Barber) at cbar@strw.leidenuniv.nl.
+If you still end up smashing your head repeatedly against the wall in frustration, contact me (Chris Barber) at cbar@strw.leidenuniv.nl. Chris is very helpful, but he has left astronomy, so maybe contact me (Nastasha Wijers) for issues around read_eagle_files, or see if John Helly will help out with read_eagle.
+
+If you get issues around not finding files, that's set by read_eagle_files, and may need to be modified to fit the file names and directory structure on the particular computer system you're using.
 
 

@@ -11,11 +11,11 @@ read_bahamas_files.py
 was written by Stijn DeBackere to read in BAHAMAS snapshots. To use this, also
 just put it in your PYTHONPATH after installing readEagle.
 
-Installation notes for read_eagle on Cosma and galaxy (Leiden system) are 
-included. Installation on quasar (Leiden system) works the same as for galaxy. 
-Please add any notes on how to install read_eagle on other systems.
+Installation notes for read_eagle on Cosma, galaxy (Leiden system), and OzStar 
+are included. Installation on quasar (Leiden system) works the same as for 
+galaxy. Please add any notes on how to install read_eagle on other systems.
 
 The 2d projection wrapper should work as long as you have the appropriate 
 read-in file installed for the simulation you want to use. Not having 
-read_bahamas_files properly installed will not prevent you form working with 
+read_bahamas_files properly installed will not prevent you from working with 
 the eagle simulations.
