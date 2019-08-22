@@ -44,6 +44,17 @@ class EagleSnapshot:
             raise EagleSnapshotClosedException("Cannot select region in closed snapshot!")
         _read_eagle.select_region(self.snap, xmin, xmax, ymin, ymax, zmin, zmax)
 
+    def select_rotated_region(self, centre, xvec, yvec, zvec, length):
+        """Select a non axis aligned region to read in"""
+        if not(self.open):
+            raise EagleSnapshotClosedException("Cannot select region in closed snapshot!")
+        cx, cy, cz = [float(c) for c in centre]
+        xx, xy, xz = [float(c) for c in xvec]
+        yx, yy, yz = [float(c) for c in yvec]
+        zx, zy, zz = [float(c) for c in zvec]
+        lx, ly, lz = [float(c) for c in length]
+        _read_eagle.select_rotated_region(self.snap, cx,cy,cz,xx,xy,xz,yx,yy,yz,zx,zy,zz,lx,ly,lz)
+
     def select_grid_cells(self, ixmin, ixmax, iymin, iymax, izmin, izmax):
         """Select hash grid cells to read in"""
         if not(self.open):
@@ -79,7 +90,13 @@ class EagleSnapshot:
         if not(self.open):
             raise EagleSnapshotClosedException("Cannot read dataset from closed snapshot!")
         return _read_eagle.read_dataset(self.snap, itype, name)
-    
+
+    def read_extra_dataset(self, itype, name, basename):
+        """Read a dataset from an auxiliary file and return it as a Numpy array"""
+        if not(self.open):
+            raise EagleSnapshotClosedException("Cannot read dataset from closed snapshot!")
+        return _read_eagle.read_extra_dataset(self.snap, itype, name, basename)
+
     def datasets(self, itype):
         """Return a list of datasets available for the specified particle type"""
         if itype < 0 or itype > 5:
