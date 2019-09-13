@@ -341,9 +341,9 @@ class read_eagle_file():
                 self.a = f['Header'].attrs['ExpansionFactor']
             except:
                 self.a = f['Header'].attrs['Time']
-            self.h = f['Header']. attrs['HubbleParam']
+            self.h = f['Header'].attrs['HubbleParam']
             try:
-                if not 'ElementAbundance' in string[-1]:
+                if not 'ElementAbundance' in string[-1]: # should always be True with Eagle: Parttype0/[Smoothed]ElementAbundance/<element> will have ElementAbundance in string[-2]. should still work though
                     self.a_scaling = f[var].attrs['aexp-scale-exponent']
                     self.h_scaling = f[var].attrs['h-scale-exponent']
                     self.CGSconversion = f[var].attrs['CGSConversionFactor']
