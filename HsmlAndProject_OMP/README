@@ -2,16 +2,41 @@ Natasha Wijers, 2018-03-23
 quick start + Makefile documentation added 2018-06-04
 
 with thanks to Matthieu Schaller for helping with the OpenMP implementation
+adapted from code originally written by Volker Springel
 
 
 ------------------------------------------------------------------------------
 Quick start
 ------------------------------------------------------------------------------
 The make_all shell script calls the default makefiles to get all the different 
-executable options. A different script (clean_all) calls the clean option of 
-all these scripts. The naming of the executables this produces, is as assumed 
-by the python wrapper. It's nothing clever, just 16 makefiles and a shell 
-script that calls them all.
+executable options needed for various options in my map-making code.
+- A gadget or C2 kernel for the gas distribution represented by a single SPH
+  particle. (C2 is used in Eagle, so it's a good default for Eagle 
+  projections.) There are also other compile options for this (see the 
+  makefiles and kernel_v3_omp.c).
+- OpenMP shared-memory parallelization can be enabled or disabled: if you're 
+  using only one core/thread, it's better not use the parallel option, since 
+  there will still be some overhead costs for (unused) parallelisation.
+- Periodic boundary conditions can be turned on or off. This only matters in 
+  the directions perpendicular to the projection axis, and determines whether 
+  contributions at the edge of the projected region wrap around the edges. 
+  This should be turned off if you're projecting a small part of a simulation,
+  like a single cluster galaxy environment, but should be turned on if you're 
+  projecting a region covering the whole box in the 'sky plane' directions. 
+- Tree building can be turned on or off. If the smoothing lengths of particles
+  are not known beforehand (e.g. for dark matter, where it isn't needed in the
+  simulation), the code will searh this tree structure to find particles' 
+  nearest neighbours and calulated a smoothing length.  
+  However, I had to change the particle index type in the projection code to a 
+  long long int for 1504^3 Eagle simulations, to avoid an overflow in this 
+  index. I did not, however, accordingly change types in the tree building part
+  of the code. It should still function for smaller boxes, but may fail for the
+  larger ones due to a similar counter overflow. Proceed with caution if you 
+  need to calculate smoothing lengths.  
+A different script (clean_all) calls the clean option of all these scripts. 
+The naming of the executables this produces, is as assumed by the python 
+wrapper. It's nothing clever, just 16 makefiles and a shell script that calls 
+them all.
 
 Just run 
 > make_all 
@@ -33,7 +58,7 @@ like in the original HsmlAndProject, there are options for
 - whether or not the projection in in a periodic box:
   OPTIONS += -DPERIODIC means use periodic boundary conditions
   makefile line 14
-  in main_v3_omp.c: determines how distances bewteen points are determined,
+  in main_v3_omp.c: determines how distances between points are determined,
   and how pixel positions are calculated
 - what to call the end product of the make process
   EXEC  = <name.so>
@@ -45,7 +70,7 @@ like in the original HsmlAndProject, there are options for
   o kernel = name of the used kernel. C2 and gadget are the standards, others 
     are not included as options in the wrapper
   o _perbc is included if compiled with OPTIONS += -DPERIODIC
-  o _omp is inlcuded if compiled with DOOPENMP += -fopenmp 
+  o _omp is included if compiled with DOOPENMP += -fopenmp 
     (see parallel notes)
 There are default makefiles provided for the different options.
 
@@ -128,9 +153,9 @@ for the implementation you want.
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 If you set -fompenmp, but do not set an implementation, the projection will 
 run, but with no checks on race conditions. 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 Race conditions are generally rare in the EAGLE projection I tested, so the 
 error may not be immediately clear from the results. 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 If you select the LOCKS options, you can set 
 DOOPENMP += -DARRCHUNKPIX=10
