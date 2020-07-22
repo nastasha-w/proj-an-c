@@ -10,6 +10,9 @@ version, you can ignore everything but the HsmlAndProject_OMP directory.
 The python wrapper is contained in the proj-an repo. 
 The script is reasonably tested for BAHAMAS.
 
+mac branch: the compiler option CC is changed from gcc to gcc-mp-9 to deal with
+the gcc -> clang issue. (Also, a header was replaced in one of the 
+HsmlAndProject files.)
 
 -------------------------------------------------------------------------------
 Contents
