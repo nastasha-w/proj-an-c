@@ -1,5 +1,5 @@
 
-#include <malloc.h>
+#include <stdlib.h>
 #ifdef _OPENMP
 #include <omp.h>
 #endif

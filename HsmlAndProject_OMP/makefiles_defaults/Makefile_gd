@@ -43,7 +43,7 @@ KERNEL = -DSPH_KERNEL_GADGET
 INCL   = proto_v3_omp.h allvars_v3_omp.h kernel_v3.h
 CC     =  gcc
 
-CFLAGS =  -O3 $(OPTIONS) $(KERNEL) $(DOOPENMP) -fPIC -Wall -mcmodel=medium
+CFLAGS =  -O3 $(OPTIONS) $(KERNEL) $(DOOPENMP) -fPIC -Wall -mcmodel=small
 LNKCMD =  $(CC) -shared $(DOOPENMP)
 
 LIBS   =  -lm -g

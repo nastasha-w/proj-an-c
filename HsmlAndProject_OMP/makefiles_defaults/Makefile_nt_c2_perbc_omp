@@ -44,7 +44,7 @@ INCL   = proto_v3_omp.h allvars_v3_omp.h
 
 CC     =  gcc
 
-CFLAGS =  -O3 $(OPTIONS) $(KERNEL) $(DOOPENMP) -fPIC -Wall -mcmodel=medium
+CFLAGS =  -O3 $(OPTIONS) $(KERNEL) $(DOOPENMP) -fPIC -Wall -mcmodel=small
 LNKCMD =  $(CC) -shared $(DOOPENMP)
 
 LIBS   =  -lm -g

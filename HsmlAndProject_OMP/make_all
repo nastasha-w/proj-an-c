@@ -4,5 +4,5 @@ MAKEFILES=./makefiles_defaults/Makefile_*
 for f in $MAKEFILES
 do
   echo "compiling with $f"
-  make -f $f
+  make CC=gcc-11 -f $f
 done
