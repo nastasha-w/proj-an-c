@@ -20,13 +20,13 @@ TEST = interp_test
 # DEBUG: report on each value's interpolation and intermediate steps
 OMP += -fopenmp
 # OPTIONS += -DDEBUG
-CFLAGS =  -O3 $(OPTIONS) $(OMP) -fPIC -Wall -mcmodel=medium
-CFLAGsTEST = -O3 $(OPTIONS) $(OMP) -Wall -mcmodel=medium
+CFLAGS =  -O3 $(OPTIONS) $(OMP) -fPIC -Wall -mcmodel=small
+CFLAGsTEST = -O3 $(OPTIONS) $(OMP) -Wall -mcmodel=small
 LNKCMD =  $(CC) -shared $(OMP)
 
 LIBS   =  -lm -g
 
-CC     =  gcc
+CC     =  gcc-11
 
 $(EXEC): $(OBJS)
 	 $(LNKCMD)  $(OBJS) -o $(EXEC) $(LIBS)

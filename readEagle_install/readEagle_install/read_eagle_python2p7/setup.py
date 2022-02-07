@@ -11,7 +11,7 @@
 
 # Edit this to set the location of HDF5
 #hdf5_location = "/gpfs/COSMA/hdf5/gnu_4.1.2/1.8.5-patch1/"
-hdf5_location = "/usr/" # on galaxy
+hdf5_location = "/opt/homebrew/" # new mac, /usr/ on galaxy
 from distutils.core import setup, Extension
 import numpy.distutils.misc_util
 
