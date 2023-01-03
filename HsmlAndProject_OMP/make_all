@@ -1,8 +1,11 @@
 #!/bin/sh
 
-MAKEFILES=./makefiles_defaults/Makefile_*
+MAKEFILES=./makefiles_fromtemplate/Makefile_*
 for f in $MAKEFILES
 do
   echo "compiling with $f"
-  make CC=gcc-11 -f $f
+  make -f $f
 done
+
+# clean up main dir
+rm *.o

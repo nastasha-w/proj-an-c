@@ -4,6 +4,9 @@
 ## general makefile (should choose per system)
 interp2d/Makefile
 */.DS_Store
+./_template_makefile
+./makefiles_fromtemplate/*
+./makefiles_debug/*
 
 ## github C default
 # Prerequisites
