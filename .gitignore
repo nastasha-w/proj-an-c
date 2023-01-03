@@ -2,8 +2,8 @@
 *~
 
 ## general makefile (should choose per system)
-Makefile
-
+interp2d/Makefile
+*/.DS_Store
 
 ## github C default
 # Prerequisites
