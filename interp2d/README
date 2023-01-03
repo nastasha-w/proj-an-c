@@ -16,6 +16,10 @@ interp2d and Makefile_2d contain an older 2d interpolation function.
 compiling
 ----------
 
+copy a makefile and adapt it to the system 
+(e.g. _Makefile_macNU, _Makefile_frontera)
+
+cp _Makefile_<sysname> Makefile
 make
 
 
