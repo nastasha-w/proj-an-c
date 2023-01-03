@@ -1,6 +1,9 @@
 ## backups
 *~
 
+## general makefile (should choose per system)
+Makefile
+
 
 ## github C default
 # Prerequisites
