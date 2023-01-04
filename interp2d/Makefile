@@ -26,7 +26,7 @@ LNKCMD =  $(CC) -shared $(OMP)
 
 LIBS   =  -lm -g
 
-CC     =  gcc-11
+CC     =  gcc-12
 
 $(EXEC): $(OBJS)
 	 $(LNKCMD)  $(OBJS) -o $(EXEC) $(LIBS)
