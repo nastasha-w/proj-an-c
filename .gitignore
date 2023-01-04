@@ -9,8 +9,8 @@
 ## general makefiles (should choose per system)
 interp2d/Makefile
 HsmlAndProject_OMP/_template_makefile
-HsmlAndProject_OMP/makefiles_fromtemplate/*
-HsmlAndProject_OMP/makefiles_debug/*
+HsmlAndProject_OMP/makefiles_fromtemplate/Make*
+HsmlAndProject_OMP/makefiles_debug/Make*
 
 ## executable (not .so)
 interp2d/interp_test
