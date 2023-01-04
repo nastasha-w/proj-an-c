@@ -25,6 +25,9 @@ It uses _makefile_template by default. It can use other template files (given
 as an argument when calling the script), but this is not recommended since in
 that case, it isn't as clear what was used. The results are put in the 
 makefiles_fromtemplate directory.
+The python version shouldn't matter much, but I used python 3.7 in testing.
+It also won't matter for what python version uses the code, since this script
+just outputs the makefiles.
 
 The make_all shell script calls the makefiles in the makefiles_fromtemplate 
 directory to get all the different executable options needed for various 
@@ -66,20 +69,16 @@ Makefile
 like in the original HsmlAndProject, there are options for 
 - which kernel to use in the projections:
   KERNEL = <kernel name>, 
-  makefile lines 19--25, 
   functions defined in kernel_v3_omp.c
 - whether or not the projection in in a periodic box:
   OPTIONS += -DPERIODIC means use periodic boundary conditions
-  makefile line 14
   in main_v3_omp.c: determines how distances between points are determined,
   and how pixel positions are calculated
 - what to call the end product of the make process
   EXEC  = <name.so>
-  makefile lines 8--10
   for my python wrapper for this, I assume the following format is used:
   o Exec = HsmlAndProject_v3_<notree_><kernel><_perbc><_omp>.so
   o notree_ should be included if compiled with OPTIONS += -DNOTREE 
-    (lines 16--17)
   o kernel = name of the used kernel. C2 and gadget are the standards, others 
     are not included as options in the wrapper
   o _perbc is included if compiled with OPTIONS += -DPERIODIC
