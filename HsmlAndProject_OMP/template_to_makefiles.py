@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import sys
+import os
 
 def filltemplate(templatestring, notreeopt=None, perbcopt=None, 
                  kernelopt=None, ompopt=None):
@@ -49,6 +50,10 @@ def filltemplate(templatestring, notreeopt=None, perbcopt=None,
     
     fillkw.update({'pyfill_namepart': _namepart})
     _mfcontent = templatestring.format(**fillkw)
+    if not os.path.isdir('./makefiles_fromtemplate'):
+        os.mkdir('./makefiles_fromtemplate')
+    if not os.path.isdir('./makefiles_debug'):
+        os.mkdir('./makefiles_debug')
     with open('./makefiles_fromtemplate/' + _mfname, 'w') as f:
         f.write(_mfcontent)
 
