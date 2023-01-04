@@ -7,7 +7,7 @@
 
 #EXEC  = HsmlAndProject_v3_notree_gadget_perbc.so
 #EXEC  = HsmlAndProject_v3_C2.so
-EXEC  = HsmlAndProject_v3_notree_C2_omp.so
+EXEC  = HsmlAndProject_v3_notree_gadget_omp.so
 
 OBJS   = main_v3_omp.o tree_v3_omp.o peano_v3_omp.o allvars_v3_omp.o kernel_v3_omp.o
 
@@ -21,8 +21,8 @@ OPTIONS += -DNOTREE
 # -DSPH_KERNEL_QUARTIC, -DSPH_KERNEL_QUINTIC, 
 # -DSPH_KERNEL_C2, -DSPH_KERNEL_C4, -DSPH_KERNEL_C6
 
-KERNEL = -DSPH_KERNEL_C2
-#KERNEL = -DSPH_KERNEL_GADGET
+#KERNEL = -DSPH_KERNEL_C2
+KERNEL = -DSPH_KERNEL_GADGET
 
 # OpenMP, parallisation options DOATOMIC, DOREDUCTION, DOLOCKS (with DOLOCKS having ARRCHUNKPIX suboption)
 # do not use more than one parallel option!, except setting ARRCHUNKPIX in DOLOCKS
@@ -44,7 +44,7 @@ INCL   = proto_v3_omp.h allvars_v3_omp.h kernel_v3.h
 
 CC     =  gcc-mp-9
 
-CFLAGS =  -O3 $(OPTIONS) $(KERNEL) $(DOOPENMP) -fPIC -Wall -mcmodel=medium
+CFLAGS =  -O3 $(OPTIONS) $(KERNEL) $(DOOPENMP) -fPIC -Wall -mcmodel=small
 LNKCMD =  $(CC) -shared $(DOOPENMP)
 
 LIBS   =  -lm -g

@@ -8,8 +8,30 @@ adapted from code originally written by Volker Springel
 ------------------------------------------------------------------------------
 Quick start
 ------------------------------------------------------------------------------
-The make_all shell script calls the default makefiles to get all the different 
-executable options needed for various options in my map-making code.
+Modify _makefile_template_<systemname> for the system you're working on.
+Typically, this will mean specifiying the compiler (CC), and possibly some
+other flags (e.g. -fopenmp with gcc vs. -qopenmp for intel)
+
+command line: 
+> cp _makefile_template_<your_system> _makefile_template
+> python template_to_makefiles.py
+> ./make_all
+
+template_to_makefiles.py substitues different compile options (defined in this 
+code explicitly, so this should be the same on different systems) to create
+different makefiles for different executables that the python projection 
+script may call.
+It uses _makefile_template by default. It can use other template files (given
+as an argument when calling the script), but this is not recommended since in
+that case, it isn't as clear what was used. The results are put in the 
+makefiles_fromtemplate directory.
+The python version shouldn't matter much, but I used python 3.7 in testing.
+It also won't matter for what python version uses the code, since this script
+just outputs the makefiles.
+
+The make_all shell script calls the makefiles in the makefiles_fromtemplate 
+directory to get all the different executable options needed for various 
+options in my map-making code.
 - A gadget or C2 kernel for the gas distribution represented by a single SPH
   particle. (C2 is used in Eagle, so it's a good default for Eagle 
   projections.) There are also other compile options for this (see the 
@@ -20,12 +42,13 @@ executable options needed for various options in my map-making code.
 - Periodic boundary conditions can be turned on or off. This only matters in 
   the directions perpendicular to the projection axis, and determines whether 
   contributions at the edge of the projected region wrap around the edges. 
-  This should be turned off if you're projecting a small part of a simulation,
-  like a single cluster galaxy environment, but should be turned on if you're 
-  projecting a region covering the whole box in the 'sky plane' directions. 
+  This should be turned off if you're projecting a small part of a simulation
+  or a zoom simulation, like a single cluster galaxy environment, but should 
+  be turned on if you're projecting a region covering a whole periodic box in
+  the 'sky plane' directions. 
 - Tree building can be turned on or off. If the smoothing lengths of particles
   are not known beforehand (e.g. for dark matter, where it isn't needed in the
-  simulation), the code will searh this tree structure to find particles' 
+  simulation), the code will search this tree structure to find particles' 
   nearest neighbours and calulated a smoothing length.  
   However, I had to change the particle index type in the projection code to a 
   long long int for 1504^3 Eagle simulations, to avoid an overflow in this 
@@ -35,14 +58,7 @@ executable options needed for various options in my map-making code.
   need to calculate smoothing lengths.  
 A different script (clean_all) calls the clean option of all these scripts. 
 The naming of the executables this produces, is as assumed by the python 
-wrapper. It's nothing clever, just 16 makefiles and a shell script that calls 
-them all.
-
-Just run 
-> make_all 
-or 
-> clean_all 
-from this directory.
+wrapper. 
 
 !! I just tested if the exec files appeared. Check the makefile you want to 
    use before doing any science/production projections with it !!
@@ -53,20 +69,16 @@ Makefile
 like in the original HsmlAndProject, there are options for 
 - which kernel to use in the projections:
   KERNEL = <kernel name>, 
-  makefile lines 19--25, 
   functions defined in kernel_v3_omp.c
 - whether or not the projection in in a periodic box:
   OPTIONS += -DPERIODIC means use periodic boundary conditions
-  makefile line 14
   in main_v3_omp.c: determines how distances between points are determined,
   and how pixel positions are calculated
 - what to call the end product of the make process
   EXEC  = <name.so>
-  makefile lines 8--10
   for my python wrapper for this, I assume the following format is used:
   o Exec = HsmlAndProject_v3_<notree_><kernel><_perbc><_omp>.so
   o notree_ should be included if compiled with OPTIONS += -DNOTREE 
-    (lines 16--17)
   o kernel = name of the used kernel. C2 and gadget are the standards, others 
     are not included as options in the wrapper
   o _perbc is included if compiled with OPTIONS += -DPERIODIC

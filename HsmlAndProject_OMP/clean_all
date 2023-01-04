@@ -6,3 +6,10 @@ do
   echo "cleaning up $f"
   make clean -f $f
 done
+
+MAKEFILES=./makefiles_fromtemplate/Makefile_*
+for f in $MAKEFILES
+do
+  echo "cleaning up $f"
+  make clean -f $f
+done

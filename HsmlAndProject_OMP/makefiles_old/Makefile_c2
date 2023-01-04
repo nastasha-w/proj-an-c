@@ -7,14 +7,14 @@
 
 #EXEC  = HsmlAndProject_v3_notree_gadget_perbc.so
 #EXEC  = HsmlAndProject_v3_C2.so
-EXEC  = HsmlAndProject_v3_notree_C2_perbc.so
+EXEC  = HsmlAndProject_v3_C2.so
 
 OBJS   = main_v3_omp.o tree_v3_omp.o peano_v3_omp.o allvars_v3_omp.o kernel_v3_omp.o
 
-OPTIONS += -DPERIODIC
+#OPTIONS += -DPERIODIC
 
 # turns off tree building to find smoothing lengths if zero (unnecessary calculation when considering e.g. gas particles)
-OPTIONS += -DNOTREE
+#OPTIONS += -DNOTREE
 
 # KERNEL SHAPE:
 # Choose one of -DSPH_KERNEL_GADGET, -DSPH_KERNEL_CUBIC,
@@ -44,19 +44,20 @@ INCL   = proto_v3_omp.h allvars_v3_omp.h kernel_v3.h
 
 CC     =  gcc-mp-9
 
-CFLAGS =  -O3 $(OPTIONS) $(KERNEL) $(DOOPENMP) -fPIC -Wall -mcmodel=medium
+CFLAGS =  -O3 $(OPTIONS) $(KERNEL) $(DOOPENMP) -fPIC -Wall -mcmodel=small
 LNKCMD =  $(CC) -shared $(DOOPENMP)
 
 LIBS   =  -lm -g
 
 
-
+# need to clean first, since object files need to be recompiled with the new options
+# not much of a time cost; compiling this stuff is fast
 $(EXEC): clean $(OBJS)
 	 $(LNKCMD)  $(OBJS) $(LIBS)  -o $(EXEC)
 
 $(OBJS): $(INCL)
 
-clean:
-	 rm -f $(OBJS) $(EXEC) ../make_maps_v3_master.pyc
-pyclean:
-	rm -f ../make_maps_v3_master.pyc
+#clean:
+#	 rm -f $(OBJS) $(EXEC) ../make_maps_v3_master.pyc
+#pyclean:
+#	rm -f ../make_maps_v3_master.pyc

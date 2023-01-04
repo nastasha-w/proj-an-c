@@ -382,7 +382,7 @@ class Gadget(object):
                 f.close()
                 j += 1
                 if j >= self.num_files :
-                    print 'No particles found in any file!'
+                    print('No particles found in any file!')
                     return self.data
             else:
                 if withdata < 0: withdata = j
@@ -461,7 +461,7 @@ class Gadget(object):
                 f.close()
                 j += 1
                 if j >= self.num_files :
-                    print 'No particles found in any file!'
+                    print('No particles found in any file!')
                     return self.data
             else:
                 if withdata < 0: withdata = j
