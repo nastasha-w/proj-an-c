@@ -4,12 +4,13 @@
 ## mac 
 .DS_Store
 */.DS_Store
+***/.DS_Store
 
 ## general makefiles (should choose per system)
 interp2d/Makefile
-./_template_makefile
-./makefiles_fromtemplate/*
-./makefiles_debug/*
+HsmlAndProject_OMP/_template_makefile
+HsmlAndProject_OMP/makefiles_fromtemplate/*
+HsmlAndProject_OMP/makefiles_debug/*
 
 ## executable (not .so)
 interp2d/interp_test
