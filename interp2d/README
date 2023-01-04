@@ -10,7 +10,9 @@ range, the edge values of the table are used.
 
 Note that more than half of the code here is just for tests.
 
-interp2d and Makefile_2d contain an older 2d interpolation function.
+interp2d and Makefile_2d contain an older 2d interpolation function. Note that
+that interp also includes a 2d interpolater, and Makefile_2d is generally not
+updated for the same systems as Makefile.
 
 
 compiling
