@@ -10,6 +10,9 @@ version, you can ignore everything but the HsmlAndProject_OMP directory.
 The python wrapper is contained in the proj-an repo. 
 The script is reasonably tested for BAHAMAS and well-tested for EAGLE.
 
+The .tar.gz packages are generally not up to date, and are therefore better
+avoided.
+
 
 -------------------------------------------------------------------------------
 Contents
