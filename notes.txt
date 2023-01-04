@@ -1,2 +1,5 @@
 modules loaded for compile on quest:
 module load anaconda3/2018.12
+
+makefiles on quest:
+*_basiclinux varieties (gcc, -fopenmp)
