@@ -8,4 +8,5 @@ do
 done
 
 # clean up main dir
+echo "Removing object files *.o"
 rm *.o
