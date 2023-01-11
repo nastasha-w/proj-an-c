@@ -367,15 +367,15 @@ def test_projection(periodic=False, kernel='C2', omp=True):
     Axis1 = 0
     Axis2 = 1
     Axis3 = 2
-    npix_x = 50.
-    npix_y = 50.
+    npix_x = 50
+    npix_y = 50
     Ls = [20., 20., 10.]
 
     lsmooth = np.array([1.5, 1.5, 1.5, 2., 2., 3., 1., 0.5, 1., 1.5])
     qW = np.array([1., 1., 2., 1., 1., 2., 0., 1., 1., 2.])
     qQ = np.array([1., 1., 1., 1., 2., 1., 1., 0., 1., 2.])
     xycoords = np.arange(1., 20., 2.)
-    zcoords = np.array([6., 4., 7., 8., 9., 10., 11., 12., 16., 13., 14.])
+    zcoords = np.array([6., 4., 7., 8., 9., 10., 11., 12., 16., 13.])
     coords = np.array([xycoords, xycoords, zcoords]).T
     if not periodic:
         coords[0, :] -= 0.5 * box3[1]

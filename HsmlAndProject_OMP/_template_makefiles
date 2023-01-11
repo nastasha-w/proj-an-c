@@ -72,7 +72,8 @@ INCL   = proto_v3_omp.h allvars_v3_omp.h kernel_v3.h
 
 CC     =  gcc-12
 
-CFLAGS =  -O3 $(OPTIONS) $(KERNEL) $(ADDOPENMP) -fPIC -Wall -mcmodel=small
+#  -march=x86_64 after error on running
+CFLAGS =  -march=x86_64 -O3 $(OPTIONS) $(KERNEL) $(ADDOPENMP) -fPIC -Wall -mcmodel=small
 LNKCMD =  $(CC) -shared $(ADDOPENMP)
 
 LIBS   =  -lm -g
@@ -102,6 +103,8 @@ kernel_v3_omp{pyfill_namepart}.o
 $(EXEC): $(OBJS)
 	 $(LNKCMD)  $(OBJS) $(LIBS)  -o $(EXEC)
 
+# $@ : name of the target used in a particular instance
+# subst: outputs string from arg3 with all instances of arg1 replaced by arg2
 %{pyfill_namepart}.o: $(INCL) %.c
 	$(CC) $(CFLAGS) -c -o $@ $(subst {pyfill_namepart}.o,,$@).c
 
