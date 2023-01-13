@@ -257,10 +257,10 @@ def kernelfunc_gd(dnorm, lsmooth):
     
     out = np.zeros(dnorm.shape, dtype=np.float32)
     mask1 = dnorm < 0.5
-    out[mask1] = 1. / lsmooth[mask1]**3 * \
+    out[mask1] = 1. / lsmooth**3 * \
                  (coeff1 + coeff2 * (dnorm[mask1] - 1.) * dnorm[mask1]**2)
     mask2 = np.logical_and(dnorm >= 0.5, dnorm <= 1.)
-    out[mask2] = 1. / lsmooth[mask2]**3 * coeff5 * (1. - dnorm[mask2])**3
+    out[mask2] = 1. / lsmooth**3 * coeff5 * (1. - dnorm[mask2])**3
 
 def kernelfunc(xcens, ycens, pos2d, lsmooth, box2, 
                periodic=False, kernel='C2'):
