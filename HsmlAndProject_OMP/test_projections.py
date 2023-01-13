@@ -483,4 +483,4 @@ if __name__ == '__main__':
         index = int(sys.argv[1])
     else:
         index = None
-    run_tests[index]
+    run_tests(index)
