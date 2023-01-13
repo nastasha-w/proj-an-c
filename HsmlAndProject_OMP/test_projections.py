@@ -321,7 +321,7 @@ def kernelfunc(xcens, ycens, pos2d, lsmooth, box2,
     ydiff = ycens - pos2d[1]
     if periodic:
         yr = box2[3] - box2[2]
-        xdiff = (ydiff + 0.5 * yr) % yr - 0.5 * yr
+        ydiff = (ydiff + 0.5 * yr) % yr - 0.5 * yr
         print(yr)
         print(ydiff)
     dnorm = np.sqrt((xdiff**2)[:, np.newaxis] + (ydiff**2)[np.newaxis, :]) 
