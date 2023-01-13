@@ -4,6 +4,48 @@
 import numpy as np
 import ctypes as ct
 import sys
+import matplotlib.pyplot as plt
+
+def plotmaps(map_C, map_py, title):
+    vmin = np.min(map_C[np.isfinite(map_C)])
+    vmin = min(vmin, np.min(map_py[np.isfinite(map_py)]))
+    vmax = np.max(map_C[np.isfinite(map_C)])
+    vmax = max(vmax, np.max(map_C[np.isfinite(map_py)]))
+
+    diff = map_C - map_py
+    infmask_C = np.logical_not(np.isnan(map_C))
+    infmask_py = np.logical_not(np.isnan(map_py))
+    print('Nan values agree: ', np.all(infmask_C == infmask_py))
+    compmap = np.logical_and(infmask_C, infmask_py)
+    dmax = np.max(np.abs(diff[compmap]))
+    dmin = -1. * dmax
+
+    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2)
+
+    img1 = ax1.imshow(map_C.T, origin='lower', interpolation='nearest',
+                      cmap='viridis', vmin=vmin, vmax=vmax)
+    ax1.set_title('C code map')
+    plt.colorbar(img1, ax=ax1) 
+    ax1.tick_params(labelbottom=False, labelleft=False)
+
+    img2 = ax2.imshow(map_py.T, origin='lower', interpolation='nearest',
+                      cmap='viridis', vmin=vmin, vmax=vmax)
+    ax2.set_title('Python code map')
+    plt.colorbar(img2, ax=ax2) 
+    ax2.tick_params(labelbottom=False, labelleft=False)
+
+    img3 = ax3.imshow(diff.T, origin='lower', interpolation='nearest',
+                      cmap='RdBu', vmin=dmin, vmax=dmax)
+    ax3.set_title('C - Python code map')
+    plt.colorbar(img3, ax=ax3)
+    ax3.tick_params(labelbottom=False, labelleft=False)
+
+    ax4.hist(diff.flatten(), 
+             bins=np.linspace(1.01 * dmin, 1.01 * dmax, 200))
+    ax4.set_title('difference histogram')
+
+    fig.suptitle(title)
+
 
 
 ### copied from proj-an/make_maps_v3_master.py
@@ -416,15 +458,21 @@ def test_projection(periodic=False, kernel='C2', omp=True):
     msg = 'Test {wq} {res} for periodic: {per}, kernel: {ker}, OpenMP: {omp}'
     msg_kw = {'per': periodic, 'ker': kernel, 'omp': omp}
     resW = np.allclose(mapW_C, mapW_py)
-    print(msg.format(wq='mapW', res='succes' if resW else 'failed', **msg_kw))
+    _mW = msg.format(wq='mapW', res='succes' if resW else 'failed', **msg_kw)
+    print(_mW)
+    if not resW:
+        plotmaps(mapW_C, mapW_py, _mW)
     # np.isclose(np.NaN, np.NaN) returns False.
     infmask_C = np.logical_not(np.isnan(mapQ_C))
     infmask_py = np.logical_not(np.isnan(mapQ_py))
     nansame = np.all(infmask_C == infmask_py)
     resQ = np.allclose(mapQ_C[infmask_C], mapQ_py[infmask_C]) \
            and nansame
-    print(msg.format(wq='mapQ', res='succes' if resQ else 'failed', **msg_kw))
-
+    _mQ = msg.format(wq='mapQ', res='succes' if resQ else 'failed', **msg_kw)
+    print(_mQ)
+    if not resQ:
+        plotmaps(mapQ_C, mapQ_py, _mQ)
+    
     if omp: # test for race conditions
         coords_rctest = np.ones((200, 3), dtype=np.float32) 
         coords_rctest[0, :] *= box3[1]
@@ -455,7 +503,10 @@ def test_projection(periodic=False, kernel='C2', omp=True):
         msg_kw = {'per': periodic, 'ker': kernel}
         resW = np.allclose(mapW_C, mapW_py)
         sfw = 'succes' if resW else 'failed'
-        print(msg.format(wq='mapW', res=sfw, **msg_kw))
+        _mW = msg.format(wq='mapW', res=sfw, **msg_kw)
+        print(_mW)
+        if not resW:
+            plotmaps(mapW_C, mapW_py, _mW)
         resQ = np.allclose(mapQ_C, mapQ_py)
         infmask_C = np.logical_not(np.isnan(mapQ_C))
         infmask_py = np.logical_not(np.isnan(mapQ_py))
@@ -463,8 +514,12 @@ def test_projection(periodic=False, kernel='C2', omp=True):
         resQ = np.allclose(mapQ_C[infmask_C], mapQ_py[infmask_C]) \
                and nansame
         sfq = 'succes' if resQ else 'failed'
-        print(msg.format(wq='mapQ', res=sfq, **msg_kw))
+        _mQ = msg.format(wq='mapQ', res=sfq, **msg_kw)
+        print(_mQ)
+        if not resQ:
+            plotmaps(mapQ_C, mapQ_py, _mQ)
     print('\n'*3)
+    plt.show()
 
 def run_tests(index=None):
     if index is None:
