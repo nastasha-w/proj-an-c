@@ -488,17 +488,17 @@ def test_projection(periodic=False, kernel='C2', omp=True):
     
     if omp: # test for race conditions
         coords_rctest = np.ones((200, 3), dtype=np.float32) 
-        coords_rctest[:, 0] *= box3[1]
-        coords_rctest[:, 1] *= box3[3]
-        coords_rctest[:, 2] *= 0.5 * box3[5]
+        coords_rctest[:, 0] *= box3[0]
+        coords_rctest[:, 1] *= box3[1]
+        coords_rctest[:, 2] *= 0.5 * box3[2]
         lsmooth_rctest = 5. * 0.51 * np.sqrt(2.) * 20. / 50. 
         lsmooth_rctest = lsmooth_rctest * np.ones((200,), dtype=np.float32)
         qW = np.ones((200,), dtype=np.float32)
         qQ = np.ones((200,), dtype=np.float32)
         if not periodic:
-            coords_rctest[0, :] -= 0.5 * box3[1]
-            coords_rctest[1, :] -= 0.5 * box3[3]
-            coords_rctest[2, :] -= 0.5 * box3[5]
+            coords_rctest[0, :] -= 0.5 * box3[0]
+            coords_rctest[1, :] -= 0.5 * box3[1]
+            coords_rctest[2, :] -= 0.5 * box3[2]
         
         dct = {'lsmooth': lsmooth_rctest, 'coords': coords_rctest,
                'qW': qW, 'qQ': qQ}
