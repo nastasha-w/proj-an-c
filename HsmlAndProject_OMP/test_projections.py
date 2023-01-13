@@ -368,6 +368,11 @@ def printmap_text(_map):
 
 
 def test_projection(periodic=False, kernel='C2', omp=True):
+    print('-'*40)
+    msg = 'Starting test: periodic: {per}, kernel: {ker}, OpenMP: {omp}'
+    print(msg.format(per=periodic, ker=kernel, omp=omp))
+    print('-'*40)
+
     box3 = [0., 20., 0., 20., 0., 20.]
     Axis1 = 0
     Axis2 = 1
@@ -442,6 +447,7 @@ def test_projection(periodic=False, kernel='C2', omp=True):
         resQ = np.allclose(mapQ_C, mapQ_py)
         sfq = 'succes' if resQ else 'failed'
         print(msg.format(wq='mapQ', res=sfq, **msg_kw))
+print('\n'*3)
         
 if __name__ == '__main__':
     test_projection(periodic=False, kernel='C2', omp=True)
