@@ -41,7 +41,7 @@ def plotmaps(map_C, map_py, title):
     plt.colorbar(img3, ax=ax3)
     ax3.tick_params(labelbottom=False, labelleft=False)
 
-    ax4.hist(diff.flatten(), 
+    ax4.hist(diff.flatten(), log=True,
              bins=np.linspace(1.01 * dmin, 1.01 * dmax, 200))
     ax4.set_title('difference histogram')
 
