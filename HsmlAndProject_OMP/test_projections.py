@@ -490,7 +490,7 @@ def test_projection(periodic=False, kernel='C2', omp=True):
         coords_rctest[:, 0] *= box3[1]
         coords_rctest[:, 1] *= box3[3]
         coords_rctest[:, 2] *= 0.5 * box3[5]
-        lsmooth_rctest = 0.51 * np.sqrt(2.) * 20. / 50. 
+        lsmooth_rctest = 5. * 0.51 * np.sqrt(2.) * 20. / 50. 
         lsmooth_rctest = lsmooth_rctest * np.ones((200,), dtype=np.float32)
         qW = np.ones((200,), dtype=np.float32)
         qQ = np.ones((200,), dtype=np.float32)
