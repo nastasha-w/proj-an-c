@@ -418,7 +418,7 @@ def test_projection(periodic=False, kernel='C2', omp=True):
         
         dct = {'lsmooth': lsmooth_rctest, 'coords': coords_rctest,
                'qW': qW, 'qQ': qQ}
-        NumPart = len(lsmooth_rctest)
+        Numpart = len(lsmooth_rctest)
 
         mapW_C, mapQ_C = project(Numpart, Ls, Axis1, Axis2, Axis3, box3, 
                              periodic, npix_x, npix_y,
