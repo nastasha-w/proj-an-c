@@ -314,8 +314,6 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
     for i in range(len(lsmooth)):
         pos2d = [coords[i, Axis1], coords[i, Axis2]]
         _lsmooth = lsmooth[i]
-        print(pos2d)
-        print(xcens)
         if not periodic:
             if pos2d[0] + _lsmooth < xcens[0]:
                 continue
@@ -330,6 +328,8 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
 
         _kf = kernelfunc(xcens, ycens, pos2d, _lsmooth, box2, 
                          periodic=periodic, kernel=kernel)
+        print(_kf)
+        print(_kf.shape)
         ipixminx = np.floor((pos2d[0] - _lsmooth - 1.5 * pixsize_x) \
                             / pixsize_x)
         ipixmaxx = np.ceil((pos2d[0] + _lsmooth + 0.5 * pixsize_x) / pixsize_x)
@@ -342,6 +342,8 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
                             (ipixmaxy + 1.) * pixsize_y, pixsize_y)
         __kf = kernelfunc(_xcnorm, _ycnorm, pos2d, _lsmooth, box2,
                           periodic=periodic, kernel=kernel)
+        print(__kf)
+        print(__kf.shape)
         _norm = np.sum(__kf)
         print('norm: {}'.format(_norm))
         _kf *= 1. / _norm
