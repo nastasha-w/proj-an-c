@@ -8,7 +8,7 @@
 
 ## general makefiles (should choose per system)
 interp2d/Makefile
-HsmlAndProject_OMP/_template_makefile
+HsmlAndProject_OMP/_template_makefiles
 HsmlAndProject_OMP/makefiles_fromtemplate/Make*
 HsmlAndProject_OMP/makefiles_debug/Make*
 
