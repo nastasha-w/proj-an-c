@@ -471,6 +471,7 @@ def run_tests(index=None):
         for index in range(8):
             run_tests(index)
     elif index in range(8):
+        print('Running test {}'.format(index))
         periodic = bool(index // 4)
         kernel = ['C2', 'gadget'][(index % 4) // 2]
         omp = bool(index % 2)
@@ -483,4 +484,4 @@ if __name__ == '__main__':
         index = int(sys.argv[1])
     else:
         index = None
-    run_tests(index)
+    run_tests(index=index)
