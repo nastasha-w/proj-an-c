@@ -10,7 +10,7 @@ def plotmaps(map_C, map_py, title):
     vmin = np.min(map_C[np.isfinite(map_C)])
     vmin = min(vmin, np.min(map_py[np.isfinite(map_py)]))
     vmax = np.max(map_C[np.isfinite(map_C)])
-    vmax = max(vmax, np.max(map_C[np.isfinite(map_C)]))
+    vmax = max(vmax, np.max(map_py[np.isfinite(map_py)]))
     print(vmin, vmax)
 
     diff = map_C - map_py
@@ -487,9 +487,9 @@ def test_projection(periodic=False, kernel='C2', omp=True):
     
     if omp: # test for race conditions
         coords_rctest = np.ones((200, 3), dtype=np.float32) 
-        coords_rctest[0, :] *= box3[1]
-        coords_rctest[1, :] *= box3[3]
-        coords_rctest[2, :] *= 0.5 * box3[5]
+        coords_rctest[:, 0] *= box3[1]
+        coords_rctest[:, 1] *= box3[3]
+        coords_rctest[:, 2] *= 0.5 * box3[5]
         lsmooth_rctest = 0.51 * np.sqrt(2.) * 20. / 50. 
         lsmooth_rctest = lsmooth_rctest * np.ones((200,), dtype=np.float32)
         qW = np.ones((200,), dtype=np.float32)
