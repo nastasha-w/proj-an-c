@@ -402,7 +402,7 @@ def test_projection(periodic=False, kernel='C2', omp=True):
     resQ = np.allclose(mapQ_C, mapQ_py)
     print(msg.format(wq='mapQ', res='succes' if resQ else 'failed', **msg_kw))
 
-    if omp:
+    if omp: # test for race conditions
         coords_rctest = np.ones((200, 3), dtype=np.float32) 
         coords_rctest[0, :] *= box3[1]
         coords_rctest[1, :] *= box3[3]
@@ -418,6 +418,7 @@ def test_projection(periodic=False, kernel='C2', omp=True):
         
         dct = {'lsmooth': lsmooth_rctest, 'coords': coords_rctest,
                'qW': qW, 'qQ': qQ}
+        NumPart = len(lsmooth_rctest)
 
         mapW_C, mapQ_C = project(Numpart, Ls, Axis1, Axis2, Axis3, box3, 
                              periodic, npix_x, npix_y,
