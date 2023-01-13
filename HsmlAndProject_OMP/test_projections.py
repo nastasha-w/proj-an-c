@@ -3,6 +3,7 @@
 
 import numpy as np
 import ctypes as ct
+import sys
 
 
 ### copied from proj-an/make_maps_v3_master.py
@@ -463,14 +464,23 @@ def test_projection(periodic=False, kernel='C2', omp=True):
                and nansame
         sfq = 'succes' if resQ else 'failed'
         print(msg.format(wq='mapQ', res=sfq, **msg_kw))
-print('\n'*3)
-        
+    print('\n'*3)
+
+def run_tests(index=None):
+    if index is None:
+        for index in range(8):
+            run_tests(index)
+    elif index in range(8):
+        periodic = bool(index // 4)
+        kernel = ['C2', 'gadget'][(index % 4) // 2]
+        omp = bool(index % 2)
+        test_projection(periodic=periodic, kernel=kernel, omp=omp)
+    else: 
+        raise ValueError('index {} is not valid'.format(index))
+
 if __name__ == '__main__':
-    test_projection(periodic=False, kernel='C2', omp=True)
-    test_projection(periodic=False, kernel='C2', omp=False)
-    test_projection(periodic=False, kernel='gadget', omp=True)
-    test_projection(periodic=False, kernel='gadget', omp=False)
-    test_projection(periodic=True, kernel='C2', omp=True)
-    test_projection(periodic=True, kernel='C2', omp=False)
-    test_projection(periodic=True, kernel='gadget', omp=True)
-    test_projection(periodic=True, kernel='gadget', omp=False)
+    if len(sys.argv) > 1:
+        index = int(sys.argv[1])
+    else:
+        index = None
+    run_tests[index]
