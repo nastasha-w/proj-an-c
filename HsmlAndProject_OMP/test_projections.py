@@ -275,7 +275,7 @@ def kernelfunc(xcens, ycens, pos2d, lsmooth, box2,
     if periodic:
         yr = box2[3] - box2[2]
         xdiff = (ydiff + 0.5 * yr) % yr - 0.5 * yr
-    dnorm = np.sqrt(xdiff**2[:, np.newaxis] + ydiff**2[np.newaxis, :]) 
+    dnorm = np.sqrt((xdiff**2)[:, np.newaxis] + (ydiff**2)[np.newaxis, :]) 
     dnorm /= lsmooth
 
     if kernel == 'C2':
