@@ -347,11 +347,11 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
         xrange = [-0.5 * Ls[Axis1], 0.5 * Ls[Axis1]]
         yrange = [-0.5 * Ls[Axis2], 0.5 * Ls[Axis2]]
         zrange = [-0.5 * Ls[Axis3], 0.5 * Ls[Axis3]]
-    print(Ls)
-    print(Axis1, Axis2, Axis3)
-    print(xrange)
-    print(yrange)
-    print(zrange)
+    #print(Ls)
+    #print(Axis1, Axis2, Axis3)
+    #print(xrange)
+    #print(yrange)
+    #print(zrange)
     pixsize_x = (xrange[1] - xrange[0]) / float(npix_x)
     pixsize_y = (yrange[1] - yrange[0]) / float(npix_y)
     xcens = np.arange(xrange[0] + 0.5 * pixsize_x, xrange[1], pixsize_x)
@@ -361,19 +361,27 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
             2 * box3[Axis2], 2 * box3[Axis2] +1]
     outW = np.zeros((npix_x, npix_y), dtype=np.float32)
     outQ = np.zeros((npix_x, npix_y), dtype=np.float32)
+    print(xcens)
+    print(ycens)
+    print(coords)
     for i in range(len(lsmooth)):
         pos2d = [coords[i, Axis1], coords[i, Axis2]]
         _lsmooth = lsmooth[i]
         if not periodic:
             if pos2d[0] + _lsmooth < xcens[0]:
+                print('Skipping ', i)
                 continue
             if pos2d[0] - _lsmooth > xcens[-1]:
+                print('Skipping ', i)
                 continue
             if pos2d[1] + _lsmooth < ycens[0]:
+                print('Skipping ', i)
                 continue
             if pos2d[1] - _lsmooth > ycens[-1]:
+                print('Skipping ', i)
                 continue
         if coords[i, Axis3] <= zrange[0] or coords[i, Axis3] > zrange[-1]:
+            print('Skipping ', i)
             continue 
 
         _kf = kernelfunc(xcens, ycens, pos2d, _lsmooth, box2, 
