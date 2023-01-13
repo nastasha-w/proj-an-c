@@ -341,8 +341,8 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
     if periodic:
         xrange = [0., box3[2 * Axis1 + 1]]
         yrange = [0., box3[2 * Axis2+ 1]]
-        zrange = [box3[2 * Axis3 + 1] - 0.5 * Ls[Axis3], 
-                  box3[2 * Axis3 + 1] + 0.5 * Ls[Axis3]]
+        zrange = [0.5 * box3[2 * Axis3 + 1] - 0.5 * Ls[Axis3], 
+                  0.5 * box3[2 * Axis3 + 1] + 0.5 * Ls[Axis3]]
     else:
         xrange = [-0.5 * Ls[Axis1], 0.5 * Ls[Axis1]]
         yrange = [-0.5 * Ls[Axis2], 0.5 * Ls[Axis2]]
