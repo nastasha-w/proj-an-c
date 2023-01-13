@@ -312,7 +312,8 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
     xcens = np.arange(xrange[0] + 0.5 * pixsize_x, xrange[1], pixsize_x)
     ycens = np.arange(yrange[0] + 0.5 * pixsize_y, yrange[1], pixsize_y)
 
-    box2 = [box3[Axis1], box3[Axis2]]
+    box2 = [2 * box3[Axis1], 2 * box3[Axis1] +1, 
+            2 * box3[Axis2], 2 * box3[Axis2] +1]
     outW = np.zeros((npix_x, npix_y), dtype=np.float32)
     outQ = np.zeros((npix_x, npix_y), dtype=np.float32)
     for i in range(len(lsmooth)):
