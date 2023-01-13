@@ -340,7 +340,7 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
 
     if periodic:
         xrange = [0., box3[2 * Axis1 + 1]]
-        yrange = [0., box3[2 * Axis2+ 1]]
+        yrange = [0., box3[2 * Axis2 + 1]]
         zrange = [0.5 * box3[2 * Axis3 + 1] - 0.5 * Ls[Axis3], 
                   0.5 * box3[2 * Axis3 + 1] + 0.5 * Ls[Axis3]]
     else:
@@ -349,16 +349,16 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
         zrange = [-0.5 * Ls[Axis3], 0.5 * Ls[Axis3]]
     #print(Ls)
     #print(Axis1, Axis2, Axis3)
-    print(xrange)
-    print(yrange)
-    print(zrange)
+    #print(xrange)
+    #print(yrange)
+    #print(zrange)
     pixsize_x = (xrange[1] - xrange[0]) / float(npix_x)
     pixsize_y = (yrange[1] - yrange[0]) / float(npix_y)
     xcens = np.arange(xrange[0] + 0.5 * pixsize_x, xrange[1], pixsize_x)
     ycens = np.arange(yrange[0] + 0.5 * pixsize_y, yrange[1], pixsize_y)
 
-    box2 = [2 * box3[Axis1], 2 * box3[Axis1] +1, 
-            2 * box3[Axis2], 2 * box3[Axis2] +1]
+    box2 = [box3[2 * Axis1], box3[2 * Axis1 + 1], 
+            box3[2 * Axis2], box3[2 * Axis2 + 1]]
     outW = np.zeros((npix_x, npix_y), dtype=np.float32)
     outQ = np.zeros((npix_x, npix_y), dtype=np.float32)
     print(xcens)
@@ -449,6 +449,7 @@ def test_projection(periodic=False, kernel='C2', omp=True):
     dy = np.append(dx[4:], dx[:4])
     zcoords = np.array([6., 4., 7., 8., 9., 10., 11., 12., 16., 13.])
     coords = np.array([xycoords + dx, xycoords + dy, zcoords]).T
+
     if not periodic:
         coords[0, :] -= 0.5 * box3[1]
         coords[1, :] -= 0.5 * box3[3]
