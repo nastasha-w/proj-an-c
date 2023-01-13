@@ -70,7 +70,7 @@ DOOPENMP += -DSCHEDULE=dynamic,30000
 
 INCL   = proto_v3_omp.h allvars_v3_omp.h kernel_v3.h
 
-CC     =  gcc-12
+CC     =  gcc
 
 #  -march=x86_64 after error on running
 CFLAGS =  -O3 $(OPTIONS) $(KERNEL) $(ADDOPENMP) -fPIC -Wall -mcmodel=small
