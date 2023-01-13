@@ -296,14 +296,16 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
     qQ = dct['qQ'].astype(np.float32)
 
     if periodic:
-        xrange = [0., box3[Axis1]]
-        yrange = [0., box3[Axis2]]
+        xrange = [0., 2 * box3[Axis1] + 1]
+        yrange = [0., 2 * box3[Axis2] + 1]
         zrange = [box3[Axis3] - 0.5 * Ls[Axis3], 
                   box3[Axis3] + 0.5 * Ls[Axis3]]
     else:
         xrange = [-0.5 * Ls[Axis1], 0.5 * Ls[Axis1]]
         yrange = [-0.5 * Ls[Axis2], 0.5 * Ls[Axis2]]
         zrange = [-0.5 * Ls[Axis3], 0.5 * Ls[Axis3]]
+    print(Ls)
+    print(Axis1, Axis2, Axis3)
     print(xrange)
     print(yrange)
     print(zrange)
@@ -343,12 +345,12 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
                             (ipixmaxx + 1.) * pixsize_x, pixsize_x)
         _ycnorm = np.arange((ipixminy + 0.5) * pixsize_y, 
                             (ipixmaxy + 1.) * pixsize_y, pixsize_y)
-        print(_xcnorm)
-        print(_ycnorm)
+        #print(_xcnorm)
+        #print(_ycnorm)
         __kf = kernelfunc(_xcnorm, _ycnorm, pos2d, _lsmooth, box2,
                           periodic=periodic, kernel=kernel)
         _norm = np.sum(__kf)
-        print('norm: {}'.format(_norm))
+        #print('norm: {}'.format(_norm))
         _kf *= 1. / _norm
         outW += qW[i] * _kf
         outQ += qQ[i] * qW[i] * _kf
