@@ -328,8 +328,6 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
 
         _kf = kernelfunc(xcens, ycens, pos2d, _lsmooth, box2, 
                          periodic=periodic, kernel=kernel)
-        print(_kf)
-        print(_kf.shape)
         ipixminx = np.floor((pos2d[0] - _lsmooth - 1.5 * pixsize_x) \
                             / pixsize_x)
         ipixmaxx = np.ceil((pos2d[0] + _lsmooth + 0.5 * pixsize_x) / pixsize_x)
@@ -342,13 +340,11 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
                             (ipixmaxy + 1.) * pixsize_y, pixsize_y)
         __kf = kernelfunc(_xcnorm, _ycnorm, pos2d, _lsmooth, box2,
                           periodic=periodic, kernel=kernel)
-        print(__kf)
-        print(__kf.shape)
         _norm = np.sum(__kf)
         print('norm: {}'.format(_norm))
         _kf *= 1. / _norm
-        outW += qW * _kf
-        outQ += qQ * qW * _kf
+        outW += qW[i] * _kf
+        outQ += qQ[i] * qW[i] * _kf
     outQ /= outW
     return outW, outQ
 
