@@ -398,6 +398,8 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
         outW += qW[i] * _kf
         outQ += qQ[i] * qW[i] * _kf
     outQ /= outW
+    # mimic C code:
+    outQ[outW == 0] = 0.
     return outW, outQ
 
 def printmap_text(_map):
