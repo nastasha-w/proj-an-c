@@ -304,6 +304,9 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
         xrange = [-0.5 * Ls[Axis1], 0.5 * Ls[Axis1]]
         yrange = [-0.5 * Ls[Axis2], 0.5 * Ls[Axis2]]
         zrange = [-0.5 * Ls[Axis3], 0.5 * Ls[Axis3]]
+    print(xrange)
+    print(yrange)
+    print(zrange)
     pixsize_x = (xrange[1] - xrange[0]) / float(npix_x)
     pixsize_y = (yrange[1] - yrange[0]) / float(npix_y)
     xcens = np.arange(xrange[0] + 0.5 * pixsize_x, xrange[1], pixsize_x)
