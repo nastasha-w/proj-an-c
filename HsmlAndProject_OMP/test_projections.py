@@ -10,7 +10,8 @@ def plotmaps(map_C, map_py, title):
     vmin = np.min(map_C[np.isfinite(map_C)])
     vmin = min(vmin, np.min(map_py[np.isfinite(map_py)]))
     vmax = np.max(map_C[np.isfinite(map_C)])
-    vmax = max(vmax, np.max(map_C[np.isfinite(map_py)]))
+    vmax = max(vmax, np.max(map_C[np.isfinite(map_C)]))
+    print(vmin, vmax)
 
     diff = map_C - map_py
     infmask_C = np.logical_not(np.isnan(map_C))
@@ -494,9 +495,9 @@ def test_projection(periodic=False, kernel='C2', omp=True):
         qW = np.ones((200,), dtype=np.float32)
         qQ = np.ones((200,), dtype=np.float32)
         if not periodic:
-            coords[0, :] -= 0.5 * box3[1]
-            coords[1, :] -= 0.5 * box3[3]
-            coords[2, :] -= 0.5 * box3[5]
+            coords_rctest[0, :] -= 0.5 * box3[1]
+            coords_rctest[1, :] -= 0.5 * box3[3]
+            coords_rctest[2, :] -= 0.5 * box3[5]
         
         dct = {'lsmooth': lsmooth_rctest, 'coords': coords_rctest,
                'qW': qW, 'qQ': qQ}
