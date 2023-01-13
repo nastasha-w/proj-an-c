@@ -317,23 +317,25 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
         print(pos2d)
         print(xcens)
         if not periodic:
-            if pos2d[0] + lsmooth < xcens[0]:
+            if pos2d[0] + _lsmooth < xcens[0]:
                 continue
-            if pos2d[0] - lsmooth > xcens[-1]:
+            if pos2d[0] - _lsmooth > xcens[-1]:
                 continue
-            if pos2d[1] + lsmooth < ycens[0]:
+            if pos2d[1] + _lsmooth < ycens[0]:
                 continue
-            if pos2d[1] - lsmooth > ycens[-1]:
+            if pos2d[1] - _lsmooth > ycens[-1]:
                 continue
         if coords[i, Axis3] <= zrange[0] or coords[i, Axis3] > zrange[-1]:
             continue 
 
         _kf = kernelfunc(xcens, ycens, pos2d, _lsmooth, box2, 
                          periodic=periodic, kernel=kernel)
-        ipixminx = np.floor((pos2d[0] - lsmooth - 1.5 * pixsize_x) / pixsize_x)
-        ipixmaxx = np.ceil((pos2d[0] + lsmooth + 0.5 * pixsize_x) / pixsize_x)
-        ipixminy = np.floor((pos2d[1] - lsmooth  - 1.5 * pixsize_y) / pixsize_y)
-        ipixmaxy = np.ceil((pos2d[1] + lsmooth + 0.5 * pixsize_y) / pixsize_y)
+        ipixminx = np.floor((pos2d[0] - _lsmooth - 1.5 * pixsize_x) \
+                            / pixsize_x)
+        ipixmaxx = np.ceil((pos2d[0] + _lsmooth + 0.5 * pixsize_x) / pixsize_x)
+        ipixminy = np.floor((pos2d[1] - _lsmooth  - 1.5 * pixsize_y) \
+                            / pixsize_y)
+        ipixmaxy = np.ceil((pos2d[1] + _lsmooth + 0.5 * pixsize_y) / pixsize_y)
         _xcnorm = np.arange((ipixminx + 0.5) * pixsize_x, 
                             (ipixmaxx + 1.) * pixsize_x, pixsize_x)
         _ycnorm = np.arange((ipixminy + 0.5) * pixsize_y, 
