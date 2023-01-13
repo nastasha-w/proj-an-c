@@ -363,9 +363,9 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
             0., box3[Axis2]]
     outW = np.zeros((npix_x, npix_y), dtype=np.float32)
     outQ = np.zeros((npix_x, npix_y), dtype=np.float32)
-    print(xcens)
-    print(ycens)
-    print(coords)
+    #print(xcens)
+    #print(ycens)
+    #print(coords)
     for i in range(len(lsmooth)):
         pos2d = [coords[i, Axis1], coords[i, Axis2]]
         _lsmooth = lsmooth[i]
