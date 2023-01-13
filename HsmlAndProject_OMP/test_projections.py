@@ -314,6 +314,8 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
     for i in range(len(lsmooth)):
         pos2d = [coords[i, Axis1], coords[i, Axis2]]
         _lsmooth = lsmooth[i]
+        print(pos2d)
+        print(xcens)
         if not periodic:
             if pos2d[0] + lsmooth < xcens[0]:
                 continue
