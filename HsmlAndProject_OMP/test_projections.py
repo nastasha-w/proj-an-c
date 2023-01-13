@@ -453,9 +453,9 @@ def test_projection(periodic=False, kernel='C2', omp=True):
     coords = np.array([xycoords + dx, xycoords + dy, zcoords]).T
 
     if not periodic:
-        coords[0, :] -= 0.5 * box3[1]
-        coords[1, :] -= 0.5 * box3[3]
-        coords[2, :] -= 0.5 * box3[5]
+        coords[0, :] -= 0.5 * box3[0]
+        coords[1, :] -= 0.5 * box3[1]
+        coords[2, :] -= 0.5 * box3[2]
     dct = {'lsmooth': lsmooth, 'coords': coords, 'qW': qW, 'qQ': qQ}
 
     Numpart = len(lsmooth)
