@@ -416,7 +416,12 @@ def test_projection(periodic=False, kernel='C2', omp=True):
     msg_kw = {'per': periodic, 'ker': kernel, 'omp': omp}
     resW = np.allclose(mapW_C, mapW_py)
     print(msg.format(wq='mapW', res='succes' if resW else 'failed', **msg_kw))
-    resQ = np.allclose(mapQ_C, mapQ_py)
+    # np.isclose(np.NaN, np.NaN) returns False.
+    infmask_C = np.logical_not(np.isnan(mapQ_C))
+    infmask_py = np.logical_not(np.isnan(mapQ_py))
+    nansame = np.all(infmask_C == infmask_py)
+    resQ = np.allclose(mapQ_C[infmask_C], mapQ_py[infmask_C]) \
+           and nansame
     print(msg.format(wq='mapQ', res='succes' if resQ else 'failed', **msg_kw))
 
     if omp: # test for race conditions
@@ -451,6 +456,11 @@ def test_projection(periodic=False, kernel='C2', omp=True):
         sfw = 'succes' if resW else 'failed'
         print(msg.format(wq='mapW', res=sfw, **msg_kw))
         resQ = np.allclose(mapQ_C, mapQ_py)
+        infmask_C = np.logical_not(np.isnan(mapQ_C))
+        infmask_py = np.logical_not(np.isnan(mapQ_py))
+        nansame = np.all(infmask_C == infmask_py)
+    resQ = np.allclose(mapQ_C[infmask_C], mapQ_py[infmask_C]) \
+           and nansame
         sfq = 'succes' if resQ else 'failed'
         print(msg.format(wq='mapQ', res=sfq, **msg_kw))
 print('\n'*3)
