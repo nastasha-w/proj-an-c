@@ -459,8 +459,8 @@ def test_projection(periodic=False, kernel='C2', omp=True):
         infmask_C = np.logical_not(np.isnan(mapQ_C))
         infmask_py = np.logical_not(np.isnan(mapQ_py))
         nansame = np.all(infmask_C == infmask_py)
-    resQ = np.allclose(mapQ_C[infmask_C], mapQ_py[infmask_C]) \
-           and nansame
+        resQ = np.allclose(mapQ_C[infmask_C], mapQ_py[infmask_C]) \
+               and nansame
         sfq = 'succes' if resQ else 'failed'
         print(msg.format(wq='mapQ', res=sfq, **msg_kw))
 print('\n'*3)
