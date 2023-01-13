@@ -341,10 +341,10 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
     qQ = dct['qQ'].astype(np.float32)
 
     if periodic:
-        xrange = [0., box3[2 * Axis1 + 1]]
-        yrange = [0., box3[2 * Axis2 + 1]]
-        zrange = [0.5 * box3[2 * Axis3 + 1] - 0.5 * Ls[Axis3], 
-                  0.5 * box3[2 * Axis3 + 1] + 0.5 * Ls[Axis3]]
+        xrange = [0., box3[Axis1]]
+        yrange = [0., box3[Axis2]]
+        zrange = [0.5 * box3[Axis3] - 0.5 * Ls[Axis3], 
+                  0.5 * box3[Axis3] + 0.5 * Ls[Axis3]]
     else:
         xrange = [-0.5 * Ls[Axis1], 0.5 * Ls[Axis1]]
         yrange = [-0.5 * Ls[Axis2], 0.5 * Ls[Axis2]]
@@ -359,8 +359,8 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
     xcens = np.arange(xrange[0] + 0.5 * pixsize_x, xrange[1], pixsize_x)
     ycens = np.arange(yrange[0] + 0.5 * pixsize_y, yrange[1], pixsize_y)
 
-    box2 = [box3[2 * Axis1], box3[2 * Axis1 + 1], 
-            box3[2 * Axis2], box3[2 * Axis2 + 1]]
+    box2 = [0., box3[Axis1], 
+            0., box3[Axis2]]
     outW = np.zeros((npix_x, npix_y), dtype=np.float32)
     outQ = np.zeros((npix_x, npix_y), dtype=np.float32)
     print(xcens)
@@ -434,7 +434,7 @@ def test_projection(periodic=False, kernel='C2', omp=True):
     print(msg.format(per=periodic, ker=kernel, omp=omp))
     print('-'*40)
 
-    box3 = [0., 20., 0., 20., 0., 20.]
+    box3 = [20., 20., 20.]
     Axis1 = 0
     Axis2 = 1
     Axis3 = 2
