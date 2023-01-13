@@ -339,6 +339,8 @@ def project_slow_test(Ls, Axis1, Axis2, Axis3, box3, periodic,
                             (ipixmaxx + 1.) * pixsize_x, pixsize_x)
         _ycnorm = np.arange((ipixminy + 0.5) * pixsize_y, 
                             (ipixmaxy + 1.) * pixsize_y, pixsize_y)
+        print(_xcnorm)
+        print(_ycnorm)
         __kf = kernelfunc(_xcnorm, _ycnorm, pos2d, _lsmooth, box2,
                           periodic=periodic, kernel=kernel)
         _norm = np.sum(__kf)
@@ -378,8 +380,11 @@ def test_projection(periodic=False, kernel='C2', omp=True):
     qW = np.array([1., 1., 2., 1., 1., 2., 0., 1., 1., 2.])
     qQ = np.array([1., 1., 1., 1., 2., 1., 1., 0., 1., 2.])
     xycoords = np.arange(1., 20., 2.)
+    dx = np.array([0.01, -0.1, 0.03, 0.04, -0.05, -0.11, 0.07, 0.09,
+                   0.12, -0.0001])
+    dy = np.append(dx[4:], dx[:4])
     zcoords = np.array([6., 4., 7., 8., 9., 10., 11., 12., 16., 13.])
-    coords = np.array([xycoords, xycoords, zcoords]).T
+    coords = np.array([xycoords + dx, xycoords + dy, zcoords]).T
     if not periodic:
         coords[0, :] -= 0.5 * box3[1]
         coords[1, :] -= 0.5 * box3[3]
