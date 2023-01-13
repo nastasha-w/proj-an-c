@@ -11,7 +11,7 @@ def plotmaps(map_C, map_py, title):
     vmin = min(vmin, np.min(map_py[np.isfinite(map_py)]))
     vmax = np.max(map_C[np.isfinite(map_C)])
     vmax = max(vmax, np.max(map_py[np.isfinite(map_py)]))
-    print(vmin, vmax)
+    #print(vmin, vmax)
 
     diff = map_C - map_py
     infmask_C = np.logical_not(np.isnan(map_C))
@@ -316,12 +316,17 @@ def kernelfunc(xcens, ycens, pos2d, lsmooth, box2,
     if periodic:
         xr = box2[1] - box2[0]
         xdiff = (xdiff + 0.5 * xr) % xr - 0.5 * xr
+        print(xr)
+        print(xdiff)
     ydiff = ycens - pos2d[1]
     if periodic:
         yr = box2[3] - box2[2]
         xdiff = (ydiff + 0.5 * yr) % yr - 0.5 * yr
+        print(yr)
+        print(ydiff)
     dnorm = np.sqrt((xdiff**2)[:, np.newaxis] + (ydiff**2)[np.newaxis, :]) 
     dnorm /= lsmooth
+
 
     if kernel == 'C2':
         out = kernelfunc_c2(dnorm, lsmooth)
