@@ -1,4 +1,13 @@
-Nastasha Wijers 2018-06-04
+
+The `readEagle` code was written by [John Helly](https://github.com/jchelly/read_eagle),
+and is included here for convenience, since the scripts in proj-an depend
+on it to read in data from EAGLE and related codes. 
+
+Stijn DeBackere wrote `read_bahamas_files.py`.
+
+
+Installation and use
+--------------------
 
 readEagle_install has it's own README files for the installation of readEagle,
 and the read_eagle_files python wrapper I use in the python wrapper for 
