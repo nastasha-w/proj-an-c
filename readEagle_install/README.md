@@ -1,7 +1,7 @@
 
 The `readEagle` code was written by [John Helly](https://github.com/jchelly/read_eagle),
-and is included here for convenience, since the scripts in proj-an depend
-on it to read in data from EAGLE and related codes. 
+and is included here for convenience, since the scripts in the `proj-an` 
+repository depend on it to read in data from EAGLE and related codes. 
 
 Stijn DeBackere wrote `read_bahamas_files.py`.
 
