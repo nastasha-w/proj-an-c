@@ -1,8 +1,9 @@
 Natasha Wijers, 2018-03-23
 quick start + Makefile documentation added 2018-06-04
 
+code originally written by Volker Springel
 with thanks to Matthieu Schaller for helping with the OpenMP implementation
-adapted from code originally written by Volker Springel
+
 
 
 ------------------------------------------------------------------------------
@@ -88,8 +89,8 @@ There are default makefiles provided for the different options.
 
 
 -------------------------------------------------------------------------------
-Differences between my HsmlAndProject version and the version I started with, 
-independent of OpenMP:
+Differences between my HsmlAndProject version and the version I started with 
+(orignal by Volker Springel), independent of OpenMP:
 -------------------------------------------------------------------------------
 Technical:
 - I changed the data type of NumPart from int to long int. This was to project 
