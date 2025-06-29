@@ -20,14 +20,14 @@ HsmlAndProject files.)
 -------------------------------------------------------------------------------
 Contents
 -------------------------------------------------------------------------------
-- HsmlAndProject_OMP: my HsmlAndProject files, modified from Volker Springel's
-  version. This takes two SPH particle properties, and projects the first onto
-  a 2d grid, and gives a weighted average of the second by the first on the 
-  same grid. See the README file inside for documentation.
-- readEagle_install: a package I got from Chris Barber for reading EAGLE output
-  files. The only thing I added is a note on installing the read_eagle_files 
-  package if you already have read_eagle. Please add/share installation notes
-  for different systems as you get them. 
+- HsmlAndProject_OMP: my HsmlAndProject files, somewhat modified from Volker
+  Springel's version. This takes two SPH particle properties, and projects the
+  first onto a 2d grid, and gives a weighted average of the second by the first
+  on the same grid. See the README file inside for documentation.
+- readEagle_install: a package I got from Chris Barber, written by John Helly,
+  for reading EAGLE output files. The only thing I added is a note on installing
+  the read_eagle_files package if you already have read_eagle. Please add/share
+  installation notes for different systems as you get them. 
 - interp2d: contains 2d and 3d interpolation function I wrote at the start of my 
   PhD, and the makefile to compile it.
 - python_wrapper: the main projection script make_maps_v3_master.py, the python
